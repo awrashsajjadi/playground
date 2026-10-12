@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>پروپوزال پارسه تجارت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;700;800&family=Vazirmatn:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a printed-proposal document; sticky contents rail on the right (RTL start), one reading column, mockups set inside "screen" frames. */
+:root{
+  --paper:#f4f8f8; --surface:#ffffff; --ink:#1c2628; --ink-2:#4b5a5c; --line:#d3e3e5;
+  --teal:#006d78; --teal-brand:#009dad; --tint:#e7f4f5; --on-teal:#ffffff;
+  --urgent:#b3141b; --urgent-bg:#fbe9ea; --warn:#8a5300; --warn-bg:#fdf1dc; --good:#17683c; --good-bg:#e3f3ea;
+  --fill:#fff3b0; --fill-ink:#4d3d00;
+  /* fixed colours for website/Instagram mockups: they depict a light website, so they don't follow the theme */
+  --mock-bg:#ffffff; --mock-ink:#414042; --mock-teal:#006d78; --mock-tint:#e7f4f5; --mock-line:#dfe9ea; --mock-red:#cd0a0a;
+  --p1:#006d78; --p2:#3d5a80; --p3:#5b6b2e; --p4:#414042; --p5:#9b2c33;
+  --f-display:"Noto Kufi Arabic","Vazirmatn",Vazir,Tahoma,sans-serif;
+  --f-body:"Vazirmatn",Vazir,Tahoma,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0e1718; --surface:#142022; --ink:#e2eeef; --ink-2:#a2b5b7; --line:#25393c;
+  --teal:#5cc8d3; --teal-brand:#2bb3c1; --tint:#173338; --on-teal:#06272b;
+  --urgent:#ff8a8f; --urgent-bg:#3a1517; --warn:#f2b75c; --warn-bg:#35270f; --good:#7fd4a2; --good-bg:#12301f;
+  --fill:#5a4b00; --fill-ink:#fff3b0; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0e1718; --surface:#142022; --ink:#e2eeef; --ink-2:#a2b5b7; --line:#25393c;
+  --teal:#5cc8d3; --teal-brand:#2bb3c1; --tint:#173338; --on-teal:#06272b;
+  --urgent:#ff8a8f; --urgent-bg:#3a1517; --warn:#f2b75c; --warn-bg:#35270f; --good:#7fd4a2; --good-bg:#12301f;
+  --fill:#5a4b00; --fill-ink:#fff3b0; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.9;
+  padding-inline:16px;padding-block:0 48px;-webkit-font-smoothing:antialiased}
+a{color:var(--teal)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.5;text-wrap:balance;margin:0}
+h2{font-size:1.65rem;font-weight:800}
+h3{font-size:1.15rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--f-mono);direction:ltr;unicode-bidi:isolate;font-size:.86em;letter-spacing:.02em}
+.num{font-variant-numeric:tabular-nums}
+.fill{background:var(--fill);color:var(--fill-ink);padding:0 .35em;border-radius:4px;outline:1px dashed currentColor;outline-offset:-1px;white-space:nowrap}
+
+.shell{max-width:1180px;margin-inline:auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;padding-top:32px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;font-size:.9rem}
+.rail .label{font-size:.75rem;letter-spacing:.08em;color:var(--ink-2);margin-bottom:8px}
+.rail ol{list-style:none;margin:0;padding:0;display:grid;gap:2px;counter-reset:toc}
+.rail li{counter-increment:toc}
+.rail a{display:flex;gap:10px;padding:5px 10px;border-radius:6px;color:var(--ink-2);text-decoration:none}
+.rail a::before{content:counter(toc,persian);color:var(--teal);font-weight:700;min-width:1.2em}
+.rail a:hover{background:var(--tint);color:var(--ink)}
+main{min-width:0;max-width:860px}
+
+/* Cover */
+.cover{padding-block:8px 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:.8rem;letter-spacing:.06em;color:var(--teal);font-weight:700}
+.cover h1{font-size:clamp(1.9rem,4.6vw,3.1rem);font-weight:800;margin-block:14px 18px;line-height:1.45}
+.cover h1 em{font-style:normal;color:var(--teal)}
+.cover .lede{font-size:1.12rem;color:var(--ink-2);max-width:62ch}
+.plate{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.plate div{padding:12px 16px;border-inline-start:1px solid var(--line)}
+.plate div:first-child{border-inline-start:0}
+.plate dt{font-size:.75rem;color:var(--ink-2)}
+.plate dd{margin:0;font-weight:500}
+.facts{margin-top:20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-radius:var(--r);overflow:hidden}
+.facts div{background:var(--teal);color:var(--on-teal);padding:16px}
+.facts b{display:block;font-family:var(--f-display);font-size:1.7rem;line-height:1.3}
+.facts span{font-size:.85rem;opacity:.92}
+
+section{padding-block:44px 8px}
+section > header{margin-bottom:20px}
+section > header .eyebrow{display:block;margin-bottom:4px}
+.intro{color:var(--ink-2);max-width:68ch;margin-top:8px}
+.stack{display:grid;gap:16px}
+.prose p+p{margin-top:12px}
+.prose{max-width:68ch}
+
+.callout{background:var(--tint);border-radius:var(--r);padding:18px 20px}
+.callout h3{margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;min-width:0}
+.card h3,.card h4{margin-bottom:6px}
+.card p,.card li{color:var(--ink-2)}
+.card ul{margin:6px 0 0;padding-inline-start:1.2em}
+.card li+li{margin-top:4px}
+ul.clean{margin:0;padding-inline-start:1.2em}
+ul.clean li+li{margin-top:6px}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.93rem}
+th,td{text-align:start;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display);font-weight:700;font-size:.85rem;color:var(--ink-2);background:var(--tint)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:500}
+.kv table{min-width:0}
+.kv th{width:9.5em;white-space:nowrap}
+
+.chip{display:inline-block;font-size:.75rem;font-weight:700;padding:1px 10px;border-radius:99px;white-space:nowrap}
+.chip.urgent{background:var(--urgent-bg);color:var(--urgent)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.good{background:var(--good-bg);color:var(--good)}
+.chip.info{background:var(--tint);color:var(--teal)}
+
+/* Palette */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.sw{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-size:.85rem}
+.sw i{display:block;height:64px}
+.sw div{padding:10px 12px}
+.sw b{display:block;font-weight:700}
+.sw small{display:block;color:var(--ink-2);line-height:1.6}
+
+/* Mockup frames */
+.frame{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--mock-bg);color:var(--mock-ink);box-shadow:0 18px 40px -28px rgba(0,40,45,.45)}
+.frame .bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#eef3f4;border-bottom:1px solid var(--mock-line)}
+.frame .bar i{width:9px;height:9px;border-radius:50%;background:#c9d6d8}
+.frame .bar span{margin-inline-start:10px;font-family:var(--f-mono);font-size:.72rem;color:#5c6b6d;direction:ltr;background:#fff;border:1px solid var(--mock-line);border-radius:6px;padding:1px 10px}
+.m-head{display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--mock-line);flex-wrap:wrap}
+.m-logo{font-family:var(--f-display);font-weight:800;color:var(--mock-teal);font-size:1.05rem}
+.m-nav{display:flex;gap:14px;font-size:.78rem;flex-wrap:wrap;flex:1}
+.m-btn{font-size:.75rem;border-radius:7px;padding:5px 12px;font-weight:700;white-space:nowrap}
+.m-btn.solid{background:var(--mock-teal);color:#fff}
+.m-btn.ghost{border:1px solid var(--mock-teal);color:var(--mock-teal)}
+.m-hero{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;padding:24px 18px;background:linear-gradient(180deg,var(--mock-tint),#fff)}
+.m-hero h4{font-family:var(--f-display);font-size:1.25rem;line-height:1.6;color:#1f2a2c}
+.m-hero p{font-size:.8rem;margin-top:6px;color:#4b5a5c}
+.m-cta{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.m-trust{display:flex;gap:12px;margin-top:14px;font-size:.7rem;color:#4b5a5c;flex-wrap:wrap}
+.m-trust span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mock-teal);margin-inline-end:5px}
+.m-visual{border-radius:12px;background:#d9ecee;position:relative;min-height:150px;overflow:hidden}
+.m-visual::before{content:"";position:absolute;inset-inline-start:18%;top:16%;width:46%;height:54%;border-radius:46% 46% 20% 20%;background:#9fcfd5}
+.m-visual::after{content:"";position:absolute;inset-inline-start:36%;top:58%;width:12%;height:34%;border-radius:8px;background:#7dbcc4}
+.m-visual small{position:absolute;bottom:8px;inset-inline-end:10px;font-size:.66rem;color:#2d5a60}
+.m-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 18px 18px}
+.m-cats div{border:1px solid var(--mock-line);border-radius:9px;padding:10px;font-size:.74rem;text-align:center}
+.m-cats div::before{content:"";display:block;height:34px;border-radius:6px;background:var(--mock-tint);margin-bottom:6px}
+.m-b2b{margin:0 18px 18px;border-radius:10px;background:#1f2a2c;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.78rem;flex-wrap:wrap}
+.m-b2b b{font-family:var(--f-display)}
+.caption{font-size:.82rem;color:var(--ink-2);margin-top:8px}
+
+/* Product page anatomy */
+.anatomy{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.anatomy .gal{background:var(--mock-tint);min-height:220px;position:relative;padding:14px}
+.anatomy .gal .thumbs{position:absolute;bottom:12px;inset-inline-start:14px;display:flex;gap:6px}
+.anatomy .gal .thumbs i{width:30px;height:30px;border-radius:6px;background:#c7e3e6}
+.anatomy .gal .play{position:absolute;top:14px;inset-inline-end:14px;font-size:.68rem;background:#fff;border-radius:99px;padding:2px 10px;color:var(--mock-teal);font-weight:700}
+.anatomy .info{padding:16px 18px;font-size:.78rem;display:grid;gap:8px;align-content:start}
+.anatomy .info h4{font-family:var(--f-display);font-size:1rem;color:#1f2a2c}
+.spec{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 12px;border:1px solid var(--mock-line);border-radius:8px;padding:8px 10px}
+.spec span{color:#5c6b6d}
+.spec b{font-weight:700;color:#1f2a2c}
+.price{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price b{font-family:var(--f-display);font-size:1.05rem;color:#1f2a2c}
+.badge{display:inline-block;background:var(--mock-tint);color:var(--mock-teal);border-radius:99px;padding:0 9px;font-weight:700;font-size:.68rem}
+.pins{counter-reset:pin;margin-top:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;font-size:.88rem;color:var(--ink-2)}
+.pins li{list-style:none}
+.pins b{color:var(--ink)}
+
+/* Sitemap */
+.tree{font-size:.92rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.tree .node{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.tree .node b{font-family:var(--f-display);font-size:.95rem}
+.tree .node.new{border-color:var(--teal)}
+.tree .node ul{margin:6px 0 0;padding-inline-start:1.1em;color:var(--ink-2);font-size:.85rem}
+.tree .tag{font-size:.68rem;color:var(--teal);font-weight:700;margin-inline-start:6px}
+
+/* Pillars bar */
+.pbar{display:flex;height:42px;border-radius:8px;overflow:hidden;margin-block:6px 14px}
+.pbar div{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.85rem;min-width:0}
+.pkey{display:grid;gap:12px}
+.pkey .row{display:grid;grid-template-columns:14px minmax(0,1fr);gap:12px;align-items:start}
+.pkey .row i{width:14px;height:14px;border-radius:4px;margin-top:7px}
+
+/* Instagram grid concept */
+.ig{max-width:420px;margin-inline:auto}
+.ig .prof{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--mock-line)}
+.ig .avatar{width:54px;height:54px;border-radius:50%;background:var(--mock-teal);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:.9rem}
+.ig .prof small{display:block;font-size:.7rem;color:#5c6b6d;line-height:1.6}
+.ig .hl{display:flex;gap:10px;padding:10px 14px;overflow-x:auto;font-size:.64rem;text-align:center}
+.ig .hl div{flex:0 0 auto;width:52px}
+.ig .hl i{display:block;width:44px;height:44px;margin-inline:auto;border-radius:50%;border:2px solid var(--mock-teal);background:var(--mock-tint)}
+.ig .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.ig .grid div{aspect-ratio:4/5;max-width:100%;color:#fff;padding:8px;font-size:.66rem;line-height:1.6;display:flex;flex-direction:column;justify-content:space-between}
+.ig .grid div small{opacity:.85;font-size:.6rem}
+
+/* Ideas */
+.ideas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.idea{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;min-width:0}
+.idea .fmt{font-size:.72rem;font-weight:700;color:var(--teal)}
+.idea h4{margin-block:2px 4px;font-size:.98rem}
+.idea p{font-size:.88rem;color:var(--ink-2)}
+
+/* Gantt */
+.gantt{min-width:680px;display:grid;grid-template-columns:170px repeat(6,minmax(0,1fr));font-size:.82rem}
+.gantt .h{padding:8px 6px;text-align:center;color:var(--ink-2);font-weight:700;border-bottom:1px solid var(--line);background:var(--tint)}
+.gantt .h small{display:block;font-weight:400;font-size:.7rem}
+.gantt .lab{padding:10px 12px;border-bottom:1px solid var(--line);font-weight:500}
+.gantt .lane{grid-column:2 / -1;display:grid;grid-template-columns:repeat(12,1fr);border-bottom:1px solid var(--line);padding:8px 0;position:relative;
+  background-image:linear-gradient(to left,var(--line) 1px,transparent 1px);background-size:calc(100% / 6) 100%}
+.gantt .b{height:24px;border-radius:6px;background:var(--teal);color:var(--on-teal);font-size:.72rem;display:flex;align-items:center;padding-inline:8px;white-space:nowrap;overflow:hidden}
+.gantt .b.soft{background:var(--tint);color:var(--teal);border:1px solid var(--teal)}
+.gantt .b.peak{background:var(--urgent-bg);color:var(--urgent);border:1px solid var(--urgent)}
+.gantt .ms{align-self:center;justify-self:start;font-size:.72rem;font-weight:700;color:var(--teal);white-space:nowrap}
+.gantt .ms::before{content:"◆ "}
+
+/* Packages */
+.pkgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.pkg{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pkg.rec{border:2px solid var(--teal)}
+.pkg .tier{font-family:var(--f-display);font-weight:800;font-size:1.2rem}
+.pkg .who{font-size:.85rem;color:var(--ink-2);min-height:3.4em}
+.pkg ul{margin:0;padding-inline-start:1.1em;font-size:.88rem;display:grid;gap:4px;flex:1}
+.pkg .cost{border-top:1px solid var(--line);padding-top:10px;font-size:.85rem;color:var(--ink-2)}
+.pkg .rec-tag{align-self:flex-start;font-size:.72rem;font-weight:700;background:var(--teal);color:var(--on-teal);padding:1px 10px;border-radius:99px}
+
+.steps{counter-reset:s;list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.steps li::before{content:counter(s,persian);font-family:var(--f-display);font-weight:800;font-size:1.3rem;color:var(--teal);line-height:1.4}
+.steps p{color:var(--ink-2);font-size:.92rem}
+
+.sig{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--ink-2);font-size:.9rem}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0;padding-top:20px}
+  .rail{display:none}
+}
+@media (max-width:720px){
+  body{font-size:15px}
+  .grid2,.grid3,.ideas,.pkgs,.pins{grid-template-columns:minmax(0,1fr)}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m-hero,.anatomy{grid-template-columns:minmax(0,1fr)}
+  .m-cats{grid-template-columns:repeat(2,1fr)}
+  .plate div{border-inline-start:0;border-top:1px solid var(--line)}
+  .plate div:first-child{border-top:0}
+}
+@media print{
+  :root,:root[data-theme="dark"]{--paper:#fff;--surface:#fff;--ink:#1c2628;--ink-2:#4b5a5c;--line:#d3e3e5;--teal:#006d78;--tint:#e7f4f5;--on-teal:#fff;
+    --urgent:#b3141b;--urgent-bg:#fbe9ea;--warn:#8a5300;--warn-bg:#fdf1dc;--good:#17683c;--good-bg:#e3f3ea;--fill:#fff3b0;--fill-ink:#4d3d00;color-scheme:light}
+  body{padding:0;font-size:12.5pt}
+  .shell{display:block;padding:0}
+  .rail{display:none}
+  main{max-width:none}
+  section{break-before:page;padding-top:0}
+  .card,.idea,.pkg,.frame,.steps li,.table-wrap,.callout{break-inside:avoid}
+  .frame{box-shadow:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@page{size:A4;margin:16mm 14mm}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="rail" aria-label="فهرست">
+  <div class="label">فهرست پروپوزال</div>
+  <ol>
+    <li><a href="#summary">خلاصهٔ مدیریتی</a></li>
+    <li><a href="#understanding">شناخت کسب‌وکار</a></li>
+    <li><a href="#audit">ممیزی وضعیت فعلی</a></li>
+    <li><a href="#strategy">راهبرد پیشنهادی</a></li>
+    <li><a href="#website">ریدیزاین سایت</a></li>
+    <li><a href="#social">سوشال مدیا و محتوا</a></li>
+    <li><a href="#operations">راهبری و پشتیبانی سایت</a></li>
+    <li><a href="#roadmap">نقشهٔ راه</a></li>
+    <li><a href="#kpi">شاخص‌های موفقیت</a></li>
+    <li><a href="#team">تیم و شیوهٔ همکاری</a></li>
+    <li><a href="#packages">بسته‌های همکاری</a></li>
+    <li><a href="#next">گام‌های بعدی</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ COVER ============ -->
+<header class="cover">
+  <span class="eyebrow">پروپوزال مدیریت محتوا، سوشال مدیا و وب‌سایت</span>
+  <h1>بیش از ۲۵ سال اعتبار در بازار شرق کشور؛<br><em>حالا وقت دیده‌شدن در فضای دیجیتال است.</em></h1>
+  <p class="lede">پیشنهادی یکپارچه برای مدیریت تولید محتوا، شبکه‌های اجتماعی، طراحی مجدد و راهبری سایت پارسه تجارت؛ با هدف تبدیل اعتبار سال‌ها پخش حرفه‌ای به حضور آنلاینی که همکار عمده جذب می‌کند و اعتماد مصرف‌کننده را می‌سازد.</p>
+  <dl class="plate">
+    <div><dt>تقدیم به</dt><dd>جناب آقای ثانوی، مدیریت محترم شرکت پارسه تجارت بهداشت</dd></div>
+    <div><dt>تهیه‌کننده</dt><dd><span class="fill">[نام تیم / آژانس]</span>، به مدیریت آرش سجادی</dd></div>
+    <div><dt>تاریخ و نسخه</dt><dd class="num">مهر ۱۴۰۵ · نسخهٔ ۱٫۰</dd></div>
+    <div><dt>طبقه‌بندی</dt><dd>محرمانه؛ ویژهٔ مدیریت پارسه تجارت</dd></div>
+  </dl>
+  <div class="facts num" aria-label="پارسه تجارت در یک نگاه">
+    <div><b>۱۳۷۹</b><span>سال تأسیس (پخش کوثر سابق)</span></div>
+    <div><b>۳ استان</b><span>خراسان رضوی، شمالی و جنوبی</span></div>
+    <div><b>۵ برند</b><span>پرومکس، کوئین، بن‌مورا، مالیزیا، اینتسا</span></div>
+    <div><b>۶۰ کالا</b><span>محصول فعال در سایت فعلی</span></div>
+  </div>
+</header>
+
+<!-- ============ 1. SUMMARY ============ -->
+<section id="summary">
+  <header><span class="eyebrow">بخش ۱</span><h2>خلاصهٔ مدیریتی</h2></header>
+  <div class="stack">
+    <div class="prose">
+      <p>پارسه تجارت سرمایه‌ای دارد که رقبای تازه‌وارد ندارند: بیش از ربع قرن سابقه، شبکهٔ پخش در سه استان خراسان، نمایندگی برندهای شناخته‌شده و نماد اعتماد الکترونیکی. اما این اعتبار امروز در جایی که آرایشگرها و فروشگاه‌ها تصمیم خرید می‌گیرند (اینستاگرام، جست‌وجوی گوگل، ترب و گروه‌های پیام‌رسان) به‌اندازهٔ واقعی‌اش دیده نمی‌شود.</p>
+      <p>ممیزی اولیهٔ ما نشان می‌دهد سایت فعلی بیشتر شبیه یک فروشگاه خرده‌فروشی عمومی است، در حالی که موتور اصلی کسب‌وکار پخش عمده است. همکار عمده در سایت مسیری برای ثبت‌نام، دیدن قیمت همکاری یا سفارش سریع ندارد. هویت بصری هم با وجود رنگ‌های درست، در اجرا یکدست نیست.</p>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3>آنچه پیشنهاد می‌کنیم</h3><p>یک تیم واحد برای محتوا، سوشال و سایت، با یک مسئول پاسخ‌گو. استراتژی، تولید، انتشار، گزارش و نگهداری فنی زیر یک سقف انجام می‌شود.</p></div>
+      <div class="card"><h3>چگونه</h3><p>در چهار فاز: ممیزی کامل در دو هفتهٔ اول، اصلاحات سریع در ماه اول، ریدیزاین سایت پیش از فصل پرفروش شب عید، و سپس رشد مستمر با کمپین و باشگاه همکاران.</p></div>
+      <div class="card"><h3>نتیجهٔ مورد انتظار</h3><p>جذب همکاران عمدهٔ جدید از کانال دیجیتال، کاهش زمان پاسخ به استعلام قیمت، اعتماد بیشتر مصرف‌کننده به اصالت کالا، و کانال‌هایی که در مالکیت خود پارسه می‌ماند.</p></div>
+    </div>
+    <div class="callout">
+      <h3>چرا همین حالا؟</h3>
+      <p>اگر همکاری از آبان ۱۴۰۵ شروع شود، کمپین پیش‌فروش همکاران از بهمن اجرا می‌شود و سایت جدید پیش از اسفند، اوج خرید شب عید آرایشگاه‌ها، آماده است. پیش‌خرید عمدهٔ شب عید مهم‌ترین پنجرهٔ فروش سال است و هر ماه تأخیر یعنی ورود به این فصل با همان ابزارهای فعلی.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. UNDERSTANDING ============ -->
+<section id="understanding">
+  <header><span class="eyebrow">بخش ۲</span><h2>شناخت ما از پارسه تجارت</h2>
+    <p class="intro">پیش از هر پیشنهادی باید روشن باشد برای چه کسی کار می‌کنیم و مشتریان او چه کسانی هستند.</p></header>
+  <div class="stack">
+    <div class="table-wrap kv">
+      <table>
+        <tbody>
+          <tr><th scope="row">نام ثبتی</th><td>شرکت پارسه تجارت بهداشت (پخش کوثر سابق)</td></tr>
+          <tr><th scope="row">سابقه</th><td class="num">تأسیس ۱۳۷۹؛ بیش از ۲۵ سال حضور در بازار B2B شرق کشور</td></tr>
+          <tr><th scope="row">حوزهٔ فعالیت</th><td>پخش انحصاری و عمدهٔ لوازم برقی آرایشگاهی و بهداشتی</td></tr>
+          <tr><th scope="row">قلمرو پخش</th><td>خراسان رضوی، خراسان شمالی، خراسان جنوبی؛ مرکز در مشهد</td></tr>
+          <tr><th scope="row">برندها</th><td>پرومکس (Promax)، کوئین (Queen)، بن‌مورا (BenMora)، مالیزیا (Malizia، ایتالیا)، اینتسا (Intesa، ایتالیا)</td></tr>
+          <tr><th scope="row">دارایی‌های اعتماد</th><td class="num">نماد اعتماد الکترونیکی (اینماد ۳۹۶۶۳۴)، دفتر ثابت در مشهد، سابقهٔ طولانی با همکاران</td></tr>
+          <tr><th scope="row">سایت فعلی</th><td>parsehtrade.com بر بستر پرستاشاپ؛ ۶۰ محصول فعال با قیمت و وضعیت موجودی</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>چهار مخاطب، چهار نیاز متفاوت</h3>
+    <div class="grid2">
+      <div class="card"><h4>آرایشگاه‌های مردانه و سالن‌های زنانه</h4><p>ابزار کار روزانه می‌خرند. دوام، قدرت موتور، گارانتی و خدمات تعمیر برایشان مهم است. تصمیم را با دیدن ابزار در دست همکار دیگر و در اینستاگرام می‌گیرند.</p></div>
+      <div class="card"><h4>فروشگاه‌های لوازم آرایشی و بهداشتی</h4><p>کالا را برای فروش مجدد می‌خواهند. حاشیهٔ سود، تنوع، موجودی پایدار، کاتالوگ به‌روز و تحویل سریع برایشان اولویت است.</p></div>
+      <div class="card"><h4>عمده‌فروشان و همکاران شهرستان‌ها</h4><p>از نیشابور و سبزوار تا بجنورد و بیرجند. به لیست قیمت دوره‌ای، شرایط پرداخت و ارتباط مستقیم با فروش نیاز دارند.</p></div>
+      <div class="card"><h4>مصرف‌کنندهٔ خانگی</h4><p>در گوگل و ترب جست‌وجو می‌کند، قیمت را مقایسه می‌کند و نگران اصالت کالاست. اگر سایت پاسخ روشن ندهد، از جای دیگری می‌خرد.</p></div>
+    </div>
+    <div class="callout">
+      <h3>چالش اصلی در یک جمله</h3>
+      <p>اعتباری که پارسه طی سال‌ها به‌صورت حضوری و از طریق شبکهٔ فروش ساخته، هنوز به زبان دیجیتال ترجمه نشده است. مأموریت ما این ترجمه است.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. AUDIT ============ -->
+<section id="audit">
+  <header><span class="eyebrow">بخش ۳</span><h2>ممیزی وضعیت فعلی</h2>
+    <p class="intro">این ممیزی بر پایهٔ داده‌های استخراج‌شده از سایت فعلی انجام شده است: کاتالوگ محصولات، ساختار منو، فونت‌ها، رنگ‌ها، تصاویر و اسکرین‌شات‌های دسکتاپ و موبایل. در فاز صفر، با دسترسی به پنل مدیریت و آمار بازدید کامل می‌شود.</p></header>
+  <div class="stack">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>حوزه</th><th>یافته</th><th>اثر بر کسب‌وکار</th><th>اولویت</th></tr></thead>
+        <tbody>
+          <tr><td>مدل کسب‌وکار در سایت</td><td>سایت مثل فروشگاه خرده‌فروشی چیده شده؛ مسیری برای ثبت‌نام همکار، قیمت عمده یا سفارش حجمی دیده نمی‌شود.</td><td>همکار بالقوه از سایت به تماس یا سفارش نمی‌رسد و فرصت جذب از دست می‌رود.</td><td><span class="chip urgent">فوری</span></td></tr>
+          <tr><td>معماری اطلاعات</td><td class="num">منوی ناوبری ۹۵ لینک دارد، در حالی که کل کاتالوگ ۶۰ محصول است.</td><td>کاربر در منو گم می‌شود و ارزش سئوی صفحات بین لینک‌های کم‌ارزش پخش می‌شود.</td><td><span class="chip urgent">فوری</span></td></tr>
+          <tr><td>نمایش قیمت</td><td>قیمت‌ها به ریال نمایش داده می‌شوند. به‌روز بودن قیمت‌ها نسبت به بازار باید بررسی شود.</td><td>مخاطب ایرانی به تومان فکر می‌کند. قیمت قدیمی یا ضرر مستقیم است یا اعتماد را از بین می‌برد.</td><td><span class="chip urgent">فوری</span></td></tr>
+          <tr><td>خوانایی و دسترس‌پذیری</td><td class="num">فیروزه‌ای اصلی <span class="mono">#009DAD</span> روی سفید نسبت کنتراست ۳٫۲۷ دارد (حداقل استاندارد برای متن ۴٫۵ است).</td><td>متن دکمه‌ها و عناوین برای بخشی از کاربران، به‌خصوص زیر نور آفتاب روی موبایل، سخت‌خوان است.</td><td><span class="chip warn">مهم</span></td></tr>
+          <tr><td>تایپوگرافی</td><td class="num">سه خانوادهٔ فونت (وزیر، VazirF و ایران‌سنس) و ۸ فایل فونت بارگذاری می‌شود.</td><td>ناهماهنگی بصری و کندی بارگذاری. ایران‌سنس فونت تجاری است و استفادهٔ وب از آن لایسنس می‌خواهد.</td><td><span class="chip warn">مهم</span></td></tr>
+          <tr><td>هویت سازمانی</td><td>ایمیل رسمی روی جیمیل شخصی است؛ نام قبلی «پخش کوثر» هنوز در ذهن بازار است.</td><td>حرفه‌ای‌بودن برند زیر سؤال می‌رود و اعتبار نام قبلی به نام جدید منتقل نمی‌شود.</td><td><span class="chip warn">مهم</span></td></tr>
+          <tr><td>تصاویر و سرعت</td><td class="num">۹۱ تصویر اصلی، احتمالاً بدون فرمت‌های سبک (WebP/AVIF) و بارگذاری تدریجی.</td><td>صفحهٔ کند روی اینترنت همراه یعنی ترک سایت پیش از دیدن محصول. در فاز صفر اندازه‌گیری می‌شود.</td><td><span class="chip warn">مهم</span></td></tr>
+          <tr><td>اطلاعات محصول</td><td>مشخصات فنی، ویدیو، راهنمای انتخاب و اطلاعات گارانتی در قالبی یکدست ارائه نشده است.</td><td>آرایشگر برای مقایسهٔ توان، نوع موتور و لوازم جانبی باید تماس بگیرد یا به رقیب سر بزند.</td><td><span class="chip info">بهبود</span></td></tr>
+          <tr><td>اعتماد و اصالت</td><td>اینماد موجود است، اما داستان ۲۵ ساله، استعلام اصالت و فرایند گارانتی برجسته نیست.</td><td>بزرگ‌ترین مزیت رقابتی پارسه، یعنی سابقه و اصالت، دیده نمی‌شود.</td><td><span class="chip info">بهبود</span></td></tr>
+          <tr><td>شبکه‌های اجتماعی</td><td>وضعیت حساب‌ها، نظم انتشار و تعامل در فاز صفر کامل بررسی می‌شود.</td><td>بدون تقویم و هویت ثابت، حساب‌ها به ویترین قابل‌اتکا برای همکاران تبدیل نمی‌شوند.</td><td><span class="chip info">بررسی</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>پالت رنگ فعلی و اصلاح پیشنهادی</h3>
+    <p class="prose" style="color:var(--ink-2)">رنگ‌های فعلی درست انتخاب شده‌اند و هویت فیروزه‌ای پارسه باید حفظ شود. پیشنهاد ما تغییر هویت نیست. یک «فیروزه‌ای عمیق» به پالت اضافه می‌شود تا متن و دکمه‌ها استاندارد خوانایی را رعایت کنند. فیروزه‌ای روشن فقط برای لوگو و سطوح بزرگ می‌ماند.</p>
+    <div class="swatches num">
+      <div class="sw"><i style="background:#009dad"></i><div><b>فیروزه‌ای برند</b><span class="mono">#009DAD</span><small>کنتراست با سفید ۳٫۲۷؛ برای سطوح و عناوین درشت</small></div></div>
+      <div class="sw"><i style="background:#29bdbd"></i><div><b>فیروزه‌ای روشن</b><span class="mono">#29BDBD</span><small>کنتراست ۲٫۳۱؛ فقط لوگو و هایلایت</small></div></div>
+      <div class="sw"><i style="background:#006d78"></i><div><b>فیروزه‌ای عمیق · جدید</b><span class="mono">#006D78</span><small>کنتراست ۶٫۰۷؛ متن، لینک و دکمه</small></div></div>
+      <div class="sw"><i style="background:#e7f4f5"></i><div><b>فیروزه‌ای ملایم</b><span class="mono">#E7F4F5</span><small>پس‌زمینهٔ باکس‌ها و بخش‌ها</small></div></div>
+      <div class="sw"><i style="background:#414042"></i><div><b>نوک‌مدادی</b><span class="mono">#414042</span><small>کنتراست ۱۰٫۳؛ متن اصلی و فوتر</small></div></div>
+      <div class="sw"><i style="background:#cd0a0a"></i><div><b>قرمز هشدار</b><span class="mono">#CD0A0A</span><small>کنتراست ۵٫۷۶؛ فقط تخفیف و ناموجود</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. STRATEGY ============ -->
+<section id="strategy">
+  <header><span class="eyebrow">بخش ۴</span><h2>راهبرد پیشنهادی</h2></header>
+  <div class="stack">
+    <div class="callout">
+      <h3>جایگاه‌یابی برند</h3>
+      <p>«پارسه تجارت، مرجع تخصصی تجهیزات برقی آرایشگاهی در شرق ایران؛ بیش از ۲۵ سال تأمین کالای اصل، با گارانتی و پشتیبانی واقعی، برای حرفه‌ای‌های زیبایی.»</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>قیف همکاران عمده (B2B)</h3>
+        <ul>
+          <li><b>آشنایی:</b> محتوای آموزشی و دموی ابزار در اینستاگرام، همکاری با آرایشگرهای شناخته‌شدهٔ مشهد</li>
+          <li><b>علاقه:</b> کانال تلگرام و واتس‌اپ همکاران با لیست قیمت و کالای جدید</li>
+          <li><b>اقدام:</b> فرم «درخواست همکاری عمده» در سایت و تماس کارشناس فروش در کمتر از یک روز کاری</li>
+          <li><b>وفاداری:</b> باشگاه همکاران، پیش‌فروش فصلی، کارگاه آموزشی و خدمات تعمیر</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>قیف مصرف‌کننده (B2C)</h3>
+        <ul>
+          <li><b>جست‌وجو:</b> سئوی صفحات محصول و راهنماهای خرید، حضور در ترب و ایمالز</li>
+          <li><b>اعتماد:</b> مشخصات کامل، ویدیو، نشانه‌های اصالت، اینماد و گارانتی</li>
+          <li><b>خرید:</b> خرید آنلاین با قیمت تومانی و پرداخت اقساطی، یا معرفی نزدیک‌ترین فروشگاه همکار</li>
+          <li><b>پس از خرید:</b> ثبت گارانتی آنلاین و محتوای نگهداری از دستگاه</li>
+        </ul>
+      </div>
+    </div>
+    <h3>لحن برند</h3>
+    <div class="grid3">
+      <div class="card"><h4>حرفه‌ای و دقیق</h4><p>با زبان آرایشگر حرف می‌زنیم: توان موتور، نوع تیغه، دمای صفحه. اغراق و ادعای بی‌پشتوانه نداریم.</p></div>
+      <div class="card"><h4>آموزش‌محور</h4><p>هر محتوا باید چیزی یاد بدهد یا مشکلی را حل کند. فروش نتیجهٔ اعتماد است.</p></div>
+      <div class="card"><h4>نزدیک و محلی</h4><p>چهره‌ها، آرایشگاه‌ها و شهرهای خراسان در محتوا دیده می‌شوند. پارسه همسایهٔ حرفه‌ای همکاران است.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. WEBSITE ============ -->
+<section id="website">
+  <header><span class="eyebrow">بخش ۵</span><h2>ریدیزاین و بازسازی سایت</h2>
+    <p class="intro">سایت جدید دو کار را هم‌زمان انجام می‌دهد: برای همکار عمده درگاه کار است و برای مصرف‌کننده فروشگاهی قابل‌اعتماد.</p></header>
+  <div class="stack">
+    <h3>اهداف سایت جدید</h3>
+    <ul class="clean">
+      <li>تبدیل بازدیدکنندهٔ حرفه‌ای به درخواست همکاری ثبت‌شده</li>
+      <li>کوتاه‌کردن مسیر استعلام قیمت از تماس تلفنی به یک کلیک در واتس‌اپ یا فرم</li>
+      <li>نمایش روشن اصالت، گارانتی و خدمات پس از فروش</li>
+      <li>بارگذاری سریع روی اینترنت همراه و رتبهٔ بهتر در جست‌وجو</li>
+      <li>مدیریت آسان قیمت و موجودی توسط تیم پارسه، بدون وابستگی فنی</li>
+    </ul>
+
+    <h3>نقشهٔ سایت پیشنهادی</h3>
+    <div class="tree">
+      <div class="node"><b>محصولات</b><ul><li>سشوار</li><li>ماشین اصلاح و تریمر</li><li>اتو و حالت‌دهندهٔ مو</li><li>برس حرارتی</li><li>مراقبت شخصی و بهداشتی</li></ul></div>
+      <div class="node"><b>برندها</b><ul><li>پرومکس</li><li>کوئین</li><li>بن‌مورا</li><li>مالیزیا و اینتسا (ایتالیا)</li></ul></div>
+      <div class="node new"><b>همکاری عمده</b><span class="tag">جدید</span><ul><li>ثبت‌نام همکار</li><li>قیمت همکاری (پس از ورود)</li><li>سفارش سریع حجمی</li><li>دانلود کاتالوگ</li></ul></div>
+      <div class="node new"><b>خدمات پس از فروش</b><span class="tag">جدید</span><ul><li>ثبت و استعلام گارانتی</li><li>استعلام اصالت کالا</li><li>پذیرش تعمیر</li></ul></div>
+      <div class="node new"><b>همکاران ما</b><span class="tag">جدید</span><ul><li>نقشهٔ فروشگاه‌های همکار در سه استان</li><li>آرایشگاه‌های منتخب</li></ul></div>
+      <div class="node new"><b>آکادمی پارسه</b><span class="tag">جدید</span><ul><li>راهنمای خرید</li><li>آموزش نگهداری ابزار</li><li>ویدیوهای آموزشی</li></ul></div>
+      <div class="node"><b>درباره ما</b><ul><li>داستان ۲۵ ساله، از کوثر تا پارسه</li><li>مجوزها و نمایندگی‌ها</li></ul></div>
+      <div class="node"><b>تماس</b><ul><li>واتس‌اپ و تلفن فروش</li><li>نقشه و ساعات کاری</li></ul></div>
+    </div>
+
+    <h3>کانسپت صفحهٔ اصلی</h3>
+    <figure style="margin:0">
+      <div class="frame" role="img" aria-label="طرح مفهومی صفحهٔ اصلی سایت جدید پارسه تجارت">
+        <div class="bar"><i></i><i></i><i></i><span>parsehtrade.com</span></div>
+        <div class="m-head">
+          <span class="m-logo">پارسه تجارت</span>
+          <span class="m-nav"><span>محصولات</span><span>برندها</span><span>همکاری عمده</span><span>خدمات پس از فروش</span><span>آکادمی</span><span>تماس</span></span>
+          <span class="m-btn ghost">ورود همکاران</span>
+        </div>
+        <div class="m-hero">
+          <div>
+            <h4>تجهیزات حرفه‌ای آرایشگاه، مستقیم از پخش‌کنندهٔ رسمی شرق کشور</h4>
+            <p>بیش از ۲۵ سال تأمین سشوار، ماشین اصلاح و لوازم برقی آرایشگاهی برای سالن‌ها و فروشگاه‌های خراسان؛ کالای اصل با گارانتی معتبر.</p>
+            <div class="m-cta"><span class="m-btn solid">درخواست همکاری عمده</span><span class="m-btn ghost">مشاهدهٔ محصولات</span></div>
+            <div class="m-trust"><span>نماد اعتماد الکترونیکی</span><span>گارانتی اصالت کالا</span><span>ارسال به سه استان خراسان</span></div>
+          </div>
+          <div class="m-visual"><small>عکس محصول در محیط آرایشگاه</small></div>
+        </div>
+        <div class="m-cats"><div>سشوار</div><div>ماشین اصلاح</div><div>اتو و حالت‌دهنده</div><div>مراقبت شخصی</div></div>
+        <div class="m-b2b"><span><b>آرایشگاه یا فروشگاه دارید؟</b> با ثبت‌نام همکار، قیمت عمده و لیست کالای جدید را هر هفته دریافت کنید.</span><span class="m-btn solid">ثبت‌نام همکار</span></div>
+      </div>
+      <figcaption class="caption">طرح مفهومی برای نمایش جهت طراحی؛ طرح نهایی پس از فاز تحقیق و تأیید وایرفریم‌ها آماده می‌شود.</figcaption>
+    </figure>
+
+    <h3>کالبد صفحهٔ محصول</h3>
+    <figure style="margin:0">
+      <div class="frame" role="img" aria-label="طرح مفهومی صفحهٔ محصول">
+        <div class="bar"><i></i><i></i><i></i><span>parsehtrade.com/product/…</span></div>
+        <div class="anatomy">
+          <div class="gal"><span class="play">▶ ویدیوی دموی ۳۰ ثانیه‌ای</span><div class="thumbs"><i></i><i></i><i></i><i></i></div></div>
+          <div class="info">
+            <span class="badge">پرومکس · مناسب آرایشگاه</span>
+            <h4>سشوار حرفه‌ای پرومکس، مدل ۷۲۰۰</h4>
+            <div class="spec"><span>توان</span><b>۲۰۰۰ وات</b><span>یونیزه</span><b>دارد</b><span>کاربری</span><b>آرایشگاهی</b><span>گارانتی</span><b>اصالت و سلامت</b></div>
+            <div class="price"><span>قیمت مصرف‌کننده</span><b><span class="fill">[قیمت]</span> تومان</b></div>
+            <div class="m-cta"><span class="m-btn solid">افزودن به سبد</span><span class="m-btn ghost">استعلام قیمت عمده در واتس‌اپ</span></div>
+            <span style="color:#5c6b6d">همکار هستید؟ برای دیدن قیمت همکاری وارد شوید.</span>
+          </div>
+        </div>
+      </div>
+      <figcaption class="caption">مقادیر جدول برای نمایش ساختار صفحه است و در پروژه از داده‌های کاتالوگ پارسه تکمیل می‌شود.</figcaption>
+    </figure>
+    <ul class="pins">
+      <li><b>گالری و ویدیو:</b> عکس استودیویی، عکس در محیط کار و دموی کوتاه</li>
+      <li><b>جدول مشخصات یکسان:</b> توان، نوع موتور، دما، طول کابل، وزن، لوازم همراه</li>
+      <li><b>دو قیمت:</b> قیمت مصرف‌کننده برای همه، قیمت همکاری فقط برای همکار واردشده</li>
+      <li><b>اقدام سریع:</b> استعلام عمده در واتس‌اپ با پیام آماده و نام کالا</li>
+      <li><b>اعتماد:</b> نشانهٔ اصالت، شرایط گارانتی و پرسش‌های پرتکرار</li>
+      <li><b>سئو:</b> داده‌های ساختاریافتهٔ محصول برای نمایش قیمت و موجودی در نتایج گوگل</li>
+    </ul>
+
+    <h3>انتخاب بستر فنی</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>گزینه</th><th>مزایا</th><th>محدودیت‌ها</th><th>ارزیابی</th></tr></thead>
+        <tbody>
+          <tr><td>ارتقای پرستاشاپ و قالب اختصاصی</td><td>حفظ داده‌ها و آدرس‌ها، کمترین تغییر برای تیم فعلی</td><td>اکوسیستم فارسی محدود، افزونه‌های B2B گران‌تر، مدیریت محتوا و وبلاگ ضعیف‌تر</td><td><span class="chip warn">گزینهٔ کم‌ریسک</span></td></tr>
+          <tr><td>وردپرس و ووکامرس با قالب اختصاصی</td><td>بزرگ‌ترین اکوسیستم فارسی، درگاه‌های پرداخت ایرانی، افزونه‌های B2B و قیمت‌گذاری همکار، وبلاگ قوی برای سئو، آموزش آسان به تیم پارسه</td><td>نیاز به مهاجرت داده و نقشهٔ ریدایرکت دقیق</td><td><span class="chip good">پیشنهاد ما</span></td></tr>
+          <tr><td>سایت اختصاصی (Headless)</td><td>سرعت و انعطاف حداکثری</td><td>هزینه و زمان بالا، وابستگی به برنامه‌نویس؛ برای کاتالوگ ۶۰ کالایی لازم نیست</td><td><span class="chip info">فعلاً لازم نیست</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>استانداردهای فنی تحویل</h3>
+    <div class="grid2">
+      <div class="card"><h4>سرعت و تجربه</h4><ul><li class="num">LCP زیر ۲٫۵ ثانیه، CLS زیر ۰٫۱ و INP زیر ۲۰۰ میلی‌ثانیه روی موبایل</li><li>تصاویر WebP با بارگذاری تدریجی</li><li>یک خانوادهٔ فونت متن‌باز (وزیرمتن) با حداکثر دو وزن</li></ul></div>
+      <div class="card"><h4>زیرساخت و امنیت</h4><ul><li>میزبانی داخلی و CDN ایرانی برای پایداری در زمان اختلال اینترنت بین‌الملل</li><li>پشتیبان‌گیری روزانه خودکار و نسخهٔ خارج از سرور</li><li>SSL، فایروال، به‌روزرسانی امنیتی منظم</li></ul></div>
+      <div class="card"><h4>سئو و مهاجرت</h4><ul><li>نقشهٔ کامل ریدایرکت ۳۰۱ از آدرس‌های قدیمی</li><li>نقشهٔ سایت XML، تگ canonical، داده‌های ساختاریافته</li><li>اتصال به Search Console و ابزار تحلیل بازدید</li></ul></div>
+      <div class="card"><h4>فروش و یکپارچگی</h4><ul><li>نمایش قیمت به تومان؛ درگاه شاپرکی و پرداخت اقساطی</li><li>فید محصولات برای ترب و ایمالز</li><li>امکان اتصال قیمت و موجودی به نرم‌افزار حسابداری پارسه</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. SOCIAL ============ -->
+<section id="social">
+  <header><span class="eyebrow">بخش ۶</span><h2>سوشال مدیا و تولید محتوا</h2>
+    <p class="intro">هر کانال نقش مشخصی دارد. محتوا یک‌بار تولید و برای هر کانال بازنویسی می‌شود.</p></header>
+  <div class="stack">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>کانال</th><th>نقش</th><th>مخاطب اصلی</th><th>ریتم انتشار</th></tr></thead>
+        <tbody>
+          <tr><td>اینستاگرام</td><td>ویترین برند، آموزش و دموی محصول</td><td>آرایشگرها، فروشگاه‌ها، مصرف‌کننده</td><td class="num">۳ پست در هفته و استوری روزانه</td></tr>
+          <tr><td>کانال تلگرام همکاران</td><td>لیست قیمت، کالای جدید، موجودی</td><td>همکاران عمده و شهرستان‌ها</td><td class="num">۲ تا ۳ به‌روزرسانی در هفته</td></tr>
+          <tr><td>واتس‌اپ بیزینس</td><td>کاتالوگ محصول، پاسخ سریع، پیام گروهی به همکاران</td><td>همکاران فعال</td><td>روزانه، بر اساس درخواست</td></tr>
+          <tr><td>پیام‌رسان‌های داخلی (بله، روبیکا یا ایتا)</td><td>کانال پشتیبان در زمان اختلال</td><td>همکاران شهرستان‌ها</td><td>هم‌زمان با تلگرام</td></tr>
+          <tr><td>آپارات</td><td>آرشیو ویدیوهای آموزشی و سئوی ویدیویی</td><td>جست‌وجوکنندگان</td><td class="num">۲ ویدیو در ماه</td></tr>
+          <tr><td>گوگل‌مپ، نشان و بلد</td><td>دیده‌شدن محلی و مسیریابی</td><td>مراجعه‌کنندهٔ حضوری</td><td>به‌روزرسانی ماهانه</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>ستون‌های محتوا</h3>
+    <div class="pbar" aria-hidden="true">
+      <div style="flex:40;background:var(--p1)">۴۰٪</div>
+      <div style="flex:25;background:var(--p2)">۲۵٪</div>
+      <div style="flex:15;background:var(--p3)">۱۵٪</div>
+      <div style="flex:10;background:var(--p4)">۱۰٪</div>
+      <div style="flex:10;background:var(--p5)">۱۰٪</div>
+    </div>
+    <div class="pkey">
+      <div class="row"><i style="background:var(--p1)"></i><div><b>آموزش حرفه‌ای (۴۰٪)</b>: تکنیک‌های اصلاح و حالت‌دهی، نگهداری و روغن‌کاری تیغه، انتخاب سشوار مناسب برای سالن</div></div>
+      <div class="row"><i style="background:var(--p2)"></i><div><b>محصول و مقایسه (۲۵٪)</b>: دموی ابزار، معرفی کالای جدید، مقایسهٔ مدل‌ها و لوازم جانبی</div></div>
+      <div class="row"><i style="background:var(--p3)"></i><div><b>همکاران و جامعهٔ حرفه‌ای (۱۵٪)</b>: آرایشگاه ماه، روایت فروشگاه‌های همکار در شهرهای خراسان، محتوای کاربران</div></div>
+      <div class="row"><i style="background:var(--p4)"></i><div><b>برند و پشت صحنه (۱۰٪)</b>: داستان ۲۵ ساله، انبار، ناوگان پخش و تیم پارسه</div></div>
+      <div class="row"><i style="background:var(--p5)"></i><div><b>پیشنهاد و کمپین (۱۰٪)</b>: پیش‌فروش فصلی، شرایط ویژهٔ همکاران و معرفی کالای تازه‌رسیده</div></div>
+    </div>
+
+    <h3>نمونه ایده‌های محتوایی</h3>
+    <div class="ideas">
+      <div class="idea"><span class="fmt">ریلز · اعتماد</span><h4>سه نشانهٔ سشوار پرومکس اصل</h4><p>مقایسهٔ کنار هم کالای اصل و تقلبی: برچسب، وزن، صدای موتور. اعتماد را می‌سازد و زیاد ذخیره و ارسال می‌شود.</p></div>
+      <div class="idea"><span class="fmt">کاروسل · آموزش</span><h4>موتور AC یا DC؟ کدام برای آرایشگاه شما</h4><p>راهنمای تصویری انتخاب سشوار بر اساس ساعت کار روزانه و نوع خدمات سالن.</p></div>
+      <div class="idea"><span class="fmt">ریلز · همکاری</span><h4>فید شصت‌ثانیه‌ای با یک آرایشگر مشهدی</h4><p>یک آرایشگر شناخته‌شده با ابزار پارسه کار می‌کند. ابزار در عمل دیده می‌شود.</p></div>
+      <div class="idea"><span class="fmt">کاروسل · نگهداری</span><h4>چهار قدم برای دو برابر کردن عمر تیغه</h4><p>تمیزکاری، روغن‌کاری و تنظیم تیغه. محتوای همیشه‌سبز که بعداً به مقالهٔ سایت هم تبدیل می‌شود.</p></div>
+      <div class="idea"><span class="fmt">استوری · فروش</span><h4>سفارش شب عید را از حالا ببندید</h4><p>نظرسنجی نیاز همکاران، معرفی بسته‌های پیش‌خرید و هدایت به واتس‌اپ فروش.</p></div>
+      <div class="idea"><span class="fmt">ریلز · پشت صحنه</span><h4>یک روز در پخش پارسه: از مشهد تا بیرجند</h4><p>ناوگان پخش و انبار؛ نشان می‌دهد پشت این برند یک سازمان واقعی ایستاده است.</p></div>
+      <div class="idea"><span class="fmt">پست · جامعه</span><h4>آرایشگاه ماه: معرفی یک همکار از نیشابور</h4><p>همکاران را قهرمان محتوا می‌کند و انگیزهٔ همکاری و بازنشر می‌سازد.</p></div>
+      <div class="idea"><span class="fmt">کاروسل · فروشگاه‌ها</span><h4>مالیزیا و اینتسا؛ ایتالیایی‌ها در قفسهٔ شما</h4><p>محتوای ویژهٔ فروشگاه‌های آرایشی دربارهٔ چیدمان و فروش برندهای ایتالیایی.</p></div>
+    </div>
+
+    <h3>کانسپت صفحهٔ اینستاگرام</h3>
+    <figure style="margin:0">
+      <div class="frame ig" role="img" aria-label="طرح مفهومی شبکهٔ پست‌های اینستاگرام">
+        <div class="prof"><div class="avatar">پارسه</div><div><b style="font-size:.85rem">پارسه تجارت | تجهیزات آرایشگاهی</b><small>پخش رسمی پرومکس، کوئین و بن‌مورا در خراسان · از ۱۳۷۹<br>همکاری عمده و استعلام قیمت ← واتس‌اپ</small></div></div>
+        <div class="hl"><div><i></i>همکاری عمده</div><div><i></i>اصالت کالا</div><div><i></i>آموزش</div><div><i></i>گارانتی</div><div><i></i>آرایشگاه ماه</div></div>
+        <div class="grid">
+          <div style="background:var(--p1)"><small>ریلز</small>آموزش فید ۶۰ ثانیه</div>
+          <div style="background:var(--p2)"><small>کاروسل</small>AC یا DC؟</div>
+          <div style="background:var(--p4)"><small>پشت صحنه</small>۲۵ سال پارسه</div>
+          <div style="background:var(--p2)"><small>ریلز</small>دموی پرومکس ۷۲۰۰</div>
+          <div style="background:var(--p3)"><small>پست</small>آرایشگاه ماه</div>
+          <div style="background:var(--p1)"><small>کاروسل</small>نگهداری تیغه</div>
+          <div style="background:var(--p5)"><small>کمپین</small>پیش‌فروش شب عید</div>
+          <div style="background:var(--p1)"><small>ریلز</small>سه نشانهٔ کالای اصل</div>
+          <div style="background:var(--p3)"><small>ریلز</small>همکار ما در بجنورد</div>
+        </div>
+      </div>
+      <figcaption class="caption" style="text-align:center">شبکهٔ منظم با رنگ ثابت برای هر ستون محتوا؛ مخاطب در یک نگاه نوع محتوا را می‌شناسد.</figcaption>
+    </figure>
+
+    <h3>کمپین‌های شش ماه نخست</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>زمان</th><th>کمپین</th><th>هدف</th></tr></thead>
+        <tbody>
+          <tr><td>آبان</td><td>«از کوثر تا پارسه»: روایت ۲۵ ساله و معرفی هویت تازه</td><td>انتقال اعتبار نام قبلی به برند پارسه</td></tr>
+          <tr><td>آذر</td><td>کمپین یلدا برای مصرف‌کننده: هدیهٔ کاربردی</td><td>فروش خرده و ساخت مخاطب</td></tr>
+          <tr><td>دی</td><td>راه‌اندازی «باشگاه همکاران پارسه» و کارگاه آموزشی حضوری</td><td>ثبت‌نام همکاران و جمع‌آوری اطلاعات تماس</td></tr>
+          <tr><td>بهمن تا اسفند</td><td>پیش‌فروش شب عید همکاران؛ لحن متناسب با ماه رمضان (حدود اواخر بهمن تا اواسط اسفند)</td><td>بزرگ‌ترین پنجرهٔ فروش عمده در سال</td></tr>
+          <tr><td>فروردین</td><td>«همکاران ما در نوروز»: محتوای کاربران و تشکر از شبکهٔ فروش</td><td>وفاداری و آماده‌سازی برای فصل عروسی</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2">
+      <div class="card"><h3>تولید محتوا</h3><ul><li>یک روز تولید در ماه: دفتر و انبار پارسه و یک آرایشگاه همکار</li><li>عکاسی استودیویی یکدست از تمام کالاها (زمینهٔ ثابت، نور ثابت)</li><li>ویدیوی عمودی ۹:۱۶ با زیرنویس فارسی، مناسب تماشای بی‌صدا</li><li>بانک قالب‌های طراحی ثابت برای پست، استوری و لیست قیمت</li></ul></div>
+      <div class="card"><h3>مدیریت ارتباط با مخاطب</h3><ul><li>پاسخ به دایرکت و دیدگاه‌ها در ساعات کاری حداکثر ظرف ۲ ساعت</li><li>دسته‌بندی پیام‌ها: استعلام عمده، خرید خرده، گارانتی و تعمیر</li><li>ارجاع مستقیم سرنخ‌های عمده به کارشناس فروش با فرم مشترک</li><li>گزارش هفتگی تعداد و کیفیت سرنخ‌ها</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. OPERATIONS ============ -->
+<section id="operations">
+  <header><span class="eyebrow">بخش ۷</span><h2>راهبری و پشتیبانی سایت</h2>
+    <p class="intro">پس از راه‌اندازی، سایت مثل یک فروشگاه فیزیکی نیاز به نگهداری روزانه دارد. این کارها را تیم ما با سطح خدمات مشخص انجام می‌دهد.</p></header>
+  <div class="stack">
+    <div class="grid3">
+      <div class="card"><h4>به‌روزرسانی کاتالوگ</h4><p>افزودن کالای جدید، به‌روزرسانی قیمت و موجودی بر اساس لیست ارسالی پارسه یا اتصال خودکار به نرم‌افزار حسابداری.</p></div>
+      <div class="card"><h4>محتوا و سئو</h4><p>انتشار مقاله‌های آکادمی، بهینه‌سازی صفحات کم‌بازده و پایش رتبهٔ کلمات کلیدی اصلی.</p></div>
+      <div class="card"><h4>فنی و امنیت</h4><p>به‌روزرسانی هسته و افزونه‌ها، پشتیبان‌گیری، پایش دسترس‌پذیری و رفع خطا.</p></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>نوع درخواست</th><th>زمان واکنش</th><th>زمان رفع یا انجام</th></tr></thead>
+        <tbody class="num">
+          <tr><td>از دسترس خارج شدن سایت</td><td>کمتر از ۱ ساعت کاری</td><td>حداکثر ۴ ساعت کاری</td></tr>
+          <tr><td>اختلال در پرداخت یا ثبت سفارش</td><td>کمتر از ۲ ساعت کاری</td><td>همان روز کاری</td></tr>
+          <tr><td>تغییر قیمت و موجودی</td><td>همان روز کاری</td><td>همان روز کاری</td></tr>
+          <tr><td>افزودن کالا یا محتوای جدید</td><td>۱ روز کاری</td><td>۲ روز کاری</td></tr>
+          <tr><td>توسعهٔ امکان جدید</td><td>۲ روز کاری</td><td>طبق برآورد و زمان‌بندی توافقی</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. ROADMAP ============ -->
+<section id="roadmap">
+  <header><span class="eyebrow">بخش ۸</span><h2>نقشهٔ راه شش ماهه</h2>
+    <p class="intro">با فرض شروع همکاری در آبان ۱۴۰۵. سوشال مدیا از هفتهٔ دوم شروع می‌شود و منتظر سایت جدید نمی‌ماند.</p></header>
+  <div class="stack">
+    <div class="table-wrap">
+      <div class="gantt" aria-label="زمان‌بندی فازها">
+        <div class="h">فاز</div>
+        <div class="h">ماه ۱<small>آبان</small></div><div class="h">ماه ۲<small>آذر</small></div><div class="h">ماه ۳<small>دی</small></div>
+        <div class="h">ماه ۴<small>بهمن</small></div><div class="h">ماه ۵<small>اسفند</small></div><div class="h">ماه ۶<small>فروردین</small></div>
+
+        <div class="lab">فاز ۰: ممیزی و شناخت</div>
+        <div class="lane"><div class="b" style="grid-column:1 / span 1">۲ هفته</div></div>
+
+        <div class="lab">فاز ۱: اصلاحات سریع</div>
+        <div class="lane"><div class="b" style="grid-column:2 / span 3">سایت فعلی و حساب‌ها</div></div>
+
+        <div class="lab">فاز ۲: ریدیزاین سایت</div>
+        <div class="lane"><div class="b" style="grid-column:3 / span 5">طراحی، توسعه، مهاجرت</div><span class="ms" style="grid-column:8 / span 3">راه‌اندازی</span></div>
+
+        <div class="lab">سوشال و تولید محتوا</div>
+        <div class="lane"><div class="b soft" style="grid-column:2 / span 11">انتشار منظم، روز تولید ماهانه، گزارش ماهانه</div></div>
+
+        <div class="lab">فاز ۳: رشد</div>
+        <div class="lane"><div class="b" style="grid-column:7 / span 6">باشگاه همکاران، تبلیغات، سئو</div></div>
+
+        <div class="lab">فصل پرفروش</div>
+        <div class="lane"><div class="b peak" style="grid-column:8 / span 4">پیش‌فروش شب عید</div></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h4>فاز ۰ · ممیزی و شناخت (۲ هفته)</h4><ul><li>دریافت دسترسی‌ها و نصب ابزارهای اندازه‌گیری</li><li>گفت‌وگو با مدیریت و تیم فروش</li><li>ممیزی کامل سایت، سرعت، سئو و حساب‌های اجتماعی</li><li>بررسی رقبا و تعیین خط پایهٔ شاخص‌ها</li></ul></div>
+      <div class="card"><h4>فاز ۱ · اصلاحات سریع (ماه ۱ و ۲)</h4><ul><li>نمایش قیمت به تومان و به‌روزرسانی قیمت‌ها</li><li>دکمهٔ واتس‌اپ فروش و فرم همکاری عمده</li><li>ایمیل رسمی روی دامنهٔ پارسه</li><li>ثبت در نقشه‌ها و یکدست‌سازی پروفایل‌های اجتماعی</li></ul></div>
+      <div class="card"><h4>فاز ۲ · ریدیزاین (ماه ۲ تا ۴)</h4><ul><li>معماری اطلاعات و وایرفریم، سپس طراحی رابط</li><li>توسعه، مهاجرت محصولات و ریدایرکت‌ها</li><li>عکاسی یکدست کالاها</li><li>تست، آموزش تیم پارسه و راه‌اندازی پیش از اسفند</li></ul></div>
+      <div class="card"><h4>فاز ۳ · رشد (از ماه ۴ به بعد)</h4><ul><li>باشگاه همکاران و پنل سفارش عمده</li><li>تبلیغات هدفمند در اینستاگرام و جست‌وجو</li><li>تولید مستمر محتوای آکادمی برای سئو</li><li>بهینه‌سازی ماهانه بر اساس داده</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. KPI ============ -->
+<section id="kpi">
+  <header><span class="eyebrow">بخش ۹</span><h2>شاخص‌های موفقیت و گزارش‌دهی</h2>
+    <p class="intro">عدد هدف برای هر شاخص پس از اندازه‌گیری خط پایه در فاز صفر و با توافق شما ثبت می‌شود. وعدهٔ عدد بدون داده نمی‌دهیم.</p></header>
+  <div class="stack">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>حوزه</th><th>شاخص</th><th>ابزار اندازه‌گیری</th><th>هدف</th></tr></thead>
+        <tbody>
+          <tr><td>کسب‌وکار</td><td>تعداد درخواست همکاری عمدهٔ ثبت‌شده از کانال‌های دیجیتال</td><td>فرم سایت، واتس‌اپ و فرم مشترک با فروش</td><td>پس از خط پایه</td></tr>
+          <tr><td>کسب‌وکار</td><td>سرنخ‌هایی که به اولین سفارش تبدیل شده‌اند</td><td>گزارش ماهانهٔ تیم فروش</td><td>پس از خط پایه</td></tr>
+          <tr><td>سایت</td><td>بازدید ارگانیک، نرخ تبدیل و کلیک روی تماس یا واتس‌اپ</td><td>ابزار تحلیل بازدید و Search Console</td><td>پس از خط پایه</td></tr>
+          <tr><td>سایت</td><td>شاخص‌های سرعت موبایل</td><td>PageSpeed و داده‌های واقعی کاربران</td><td class="num">LCP زیر ۲٫۵ ثانیه</td></tr>
+          <tr><td>سوشال</td><td>دسترسی، نرخ تعامل، ذخیره و ارسال</td><td>آمار داخلی پلتفرم‌ها</td><td>پس از خط پایه</td></tr>
+          <tr><td>سوشال</td><td>دایرکت‌ها و استعلام‌های واقعی</td><td>دسته‌بندی پیام‌ها</td><td>پس از خط پایه</td></tr>
+          <tr><td>ارتباط</td><td>زمان پاسخ به پیام‌ها</td><td>گزارش ادمین</td><td class="num">زیر ۲ ساعت کاری</td></tr>
+          <tr><td>انتشار</td><td>پایبندی به تقویم محتوای تأییدشده</td><td>تقویم مشترک</td><td class="num">۱۰۰٪</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid3">
+      <div class="card"><h4>هفتگی</h4><p>تقویم محتوای هفتهٔ بعد برای تأیید و خلاصهٔ سرنخ‌ها.</p></div>
+      <div class="card"><h4>ماهانه</h4><p>گزارش عملکرد با تحلیل و پیشنهاد، در جلسهٔ حضوری یا آنلاین ۴۵ دقیقه‌ای.</p></div>
+      <div class="card"><h4>فصلی</h4><p>بازنگری راهبرد، بودجهٔ تبلیغات و اولویت‌های فصل بعد.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. TEAM ============ -->
+<section id="team">
+  <header><span class="eyebrow">بخش ۱۰</span><h2>تیم و شیوهٔ همکاری</h2></header>
+  <div class="stack">
+    <div class="grid2">
+      <div class="card"><h4>مدیر پروژه و استراتژیست: آرش سجادی</h4><p>نقطهٔ تماس واحد پارسه، مسئول راهبرد، کیفیت خروجی‌ها، زمان‌بندی و گزارش‌دهی.</p></div>
+      <div class="card"><h4>کارشناس محتوا و کپی‌رایتر</h4><p>تقویم محتوا، متن پست‌ها، سناریوی ویدیو و مقاله‌های آکادمی.</p></div>
+      <div class="card"><h4>طراح گرافیک و رابط کاربری</h4><p>قالب‌های سوشال، طراحی سایت و سیستم طراحی برند.</p></div>
+      <div class="card"><h4>عکاس، فیلم‌بردار و تدوینگر</h4><p>روز تولید ماهانه، عکاسی محصول و ریلز.</p></div>
+      <div class="card"><h4>ادمین و مدیر ارتباط با مخاطب</h4><p>انتشار، پاسخ به پیام‌ها و ارجاع سرنخ‌ها به فروش.</p></div>
+      <div class="card"><h4>توسعه‌دهندهٔ وب و کارشناس سئو</h4><p>ساخت و نگهداری سایت، سرعت، امنیت و رتبهٔ جست‌وجو.</p></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>تعهدات ما</h3><ul><li>یک مسئول پاسخ‌گو برای همه‌چیز</li><li>تقویم محتوا یک هفته جلوتر برای تأیید</li><li>گزارش ماهانهٔ شفاف با عدد واقعی</li><li>مالکیت کامل همهٔ حساب‌ها، دامنه و فایل‌ها با پارسه</li></ul></div>
+      <div class="card"><h3>آنچه از پارسه نیاز داریم</h3><ul><li>یک نفر رابط برای تأیید محتوا، حداکثر ظرف ۴۸ ساعت</li><li>دسترسی به سایت، دامنه، میزبان و حساب‌های اجتماعی</li><li>لیست قیمت و موجودی به‌روز و نمونهٔ کالا برای عکاسی</li><li>یک کارشناس فروش برای پیگیری سرنخ‌ها</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. PACKAGES ============ -->
+<section id="packages">
+  <header><span class="eyebrow">بخش ۱۱</span><h2>بسته‌های همکاری</h2>
+    <p class="intro">خدمات ماهانه و پروژه‌های یک‌باره جدا قیمت‌گذاری می‌شوند. بودجهٔ تبلیغات جداست و مستقیم از طرف پارسه پرداخت می‌شود.</p></header>
+  <div class="stack">
+    <div class="pkgs">
+      <div class="pkg">
+        <span class="tier">پایه</span>
+        <p class="who">برای شروع حضور منظم و نگهداری سایت فعلی</p>
+        <ul class="num"><li>مدیریت اینستاگرام و کانال تلگرام همکاران</li><li>۸ پست در ماه، شامل ۲ ریلز</li><li>۱۵ استوری در ماه</li><li>به‌روزرسانی قیمت و کالا در سایت</li><li>نگهداری فنی و پشتیبان‌گیری</li><li>گزارش ماهانه</li></ul>
+        <div class="cost">ماهانه: <span class="fill">[مبلغ] تومان</span></div>
+      </div>
+      <div class="pkg rec">
+        <span class="rec-tag">پیشنهاد ما</span>
+        <span class="tier">رشد</span>
+        <p class="who">برای جذب همکار عمده و آماده‌شدن برای فصل شب عید</p>
+        <ul class="num"><li>همهٔ خدمات بستهٔ پایه</li><li>۱۲ پست در ماه، شامل ۶ ریلز</li><li>استوری روزانه (حدود ۳۰ در ماه)</li><li>واتس‌اپ بیزینس و پیام‌رسان داخلی</li><li>یک روز تولید عکس و ویدیو در ماه</li><li>۲ مقالهٔ سئو در ماه</li><li>مدیریت دایرکت و ارجاع سرنخ به فروش</li><li>گزارش و جلسهٔ ماهانه</li></ul>
+        <div class="cost">ماهانه: <span class="fill">[مبلغ] تومان</span></div>
+      </div>
+      <div class="pkg">
+        <span class="tier">پیشرو</span>
+        <p class="who">برای رشد سریع و حضور پررنگ در کل خراسان</p>
+        <ul class="num"><li>همهٔ خدمات بستهٔ رشد</li><li>مدیریت کمپین‌های تبلیغاتی</li><li>همکاری با آرایشگرهای شناخته‌شده</li><li>۴ مقالهٔ سئو و ۲ ویدیوی آموزشی بلند در ماه</li><li>برگزاری کارگاه فصلی همکاران</li><li>باشگاه همکاران و پیام‌رسانی گروهی</li></ul>
+        <div class="cost">ماهانه: <span class="fill">[مبلغ] تومان</span> + کارمزد مدیریت تبلیغات</div>
+      </div>
+    </div>
+
+    <h3>پروژه‌های یک‌باره</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>پروژه</th><th>خروجی</th><th>زمان</th><th>هزینه</th></tr></thead>
+        <tbody class="num">
+          <tr><td>ریدیزاین و بازسازی سایت</td><td>طراحی اختصاصی، پنل همکاران، مهاجرت ۶۰ کالا، ریدایرکت‌ها، آموزش تیم</td><td>۱۰ تا ۱۲ هفته</td><td><span class="fill">[مبلغ]</span></td></tr>
+          <tr><td>عکاسی یکدست کاتالوگ</td><td>عکس استودیویی و محیطی برای ۶۰ کالا</td><td>۲ تا ۳ هفته</td><td><span class="fill">[مبلغ]</span></td></tr>
+          <tr><td>راهنمای هویت بصری</td><td>پالت، تایپوگرافی، قالب‌ها و قواعد استفاده از لوگو</td><td>۳ هفته</td><td><span class="fill">[مبلغ]</span></td></tr>
+          <tr><td>کاتالوگ همکاران</td><td>کاتالوگ PDF و چاپی با مشخصات و کد کالا</td><td>۲ هفته</td><td><span class="fill">[مبلغ]</span></td></tr>
+          <tr><td>فیلم «از کوثر تا پارسه»</td><td>ویدیوی معرفی ۹۰ ثانیه‌ای و نسخه‌های کوتاه</td><td>۳ هفته</td><td><span class="fill">[مبلغ]</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>شرایط پیشنهادی</h3>
+      <ul>
+        <li>حداقل مدت همکاری ماهانه: ۶ ماه؛ پس از آن تمدید با اطلاع ۳۰ روزه</li>
+        <li>پرداخت ماهانه در ابتدای هر ماه؛ پروژهٔ سایت در سه قسط: شروع، تأیید طراحی، راه‌اندازی</li>
+        <li>بازنگری قیمت خدمات ماهانه هر سه ماه یک‌بار، متناسب با تورم و با توافق طرفین</li>
+        <li>دو مرحله اصلاح برای هر خروجی</li>
+        <li>مالکیت همهٔ حساب‌ها، دامنه، فایل‌های لایه‌باز و محتوا پس از تسویه با پارسه تجارت</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. NEXT ============ -->
+<section id="next">
+  <header><span class="eyebrow">بخش ۱۲</span><h2>گام‌های بعدی</h2></header>
+  <ol class="steps">
+    <li><div><h4>تأیید محدودهٔ کار و بسته</h4><p>انتخاب بستهٔ ماهانه و پروژه‌های یک‌باره در همین جلسه یا حداکثر ظرف یک هفته.</p></div></li>
+    <li><div><h4>قرارداد و تحویل دسترسی‌ها</h4><p>امضای قرارداد و تحویل دسترسی‌ها طبق فهرست مشخص.</p></div></li>
+    <li><div><h4>جلسهٔ شروع و بازدید</h4><p>کارگاه دوساعته با مدیریت و تیم فروش و بازدید از دفتر و انبار برای اولین روز تولید.</p></div></li>
+    <li><div><h4>گزارش فاز صفر</h4><p>تحویل ممیزی کامل، خط پایهٔ شاخص‌ها و تقویم محتوای ماه اول، ۱۴ روز پس از شروع.</p></div></li>
+    <li><div><h4>شروع انتشار و اصلاحات سریع</h4><p>اولین محتواها منتشر می‌شوند و اصلاحات فوری سایت فعلی اجرا می‌شود.</p></div></li>
+  </ol>
+  <div class="sig">
+    <div>با احترام،<br><b style="color:var(--ink)">آرش سجادی</b><br>مدیر پروژه، <span class="fill">[نام تیم / آژانس]</span></div>
+    <div class="num">تلفن: <span class="fill">[شماره تماس]</span><br>ایمیل: <span class="fill">[ایمیل کاری]</span></div>
+  </div>
+</section>
+
+</main>
+</div>
+</body>
+</html>

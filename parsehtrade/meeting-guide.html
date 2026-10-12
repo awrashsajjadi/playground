@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>راهنمای جلسه با آقای ثانوی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a private briefing binder; sticky section tabs on top, one column of numbered briefing blocks, "say this" lines in marker yellow. */
+:root{
+  --bg:#f1f3f6; --surface:#ffffff; --ink:#142033; --ink-2:#536074; --line:#dbe1e9;
+  --accent:#2350b8; --accent-soft:#e7edfb; --on-accent:#ffffff;
+  --mark:#ffeaa3; --mark-ink:#3a2c00;
+  --danger:#b42318; --danger-bg:#fdecea; --ok:#146c43; --ok-bg:#e2f3e9; --warn:#8a5300; --warn-bg:#fdf1dc;
+  --f-body:"Vazirmatn",Vazir,Tahoma,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141c; --surface:#161d28; --ink:#e4e9f1; --ink-2:#a3aebd; --line:#283244;
+  --accent:#86a8ff; --accent-soft:#1d2a47; --on-accent:#0d1530;
+  --mark:#4f4210; --mark-ink:#ffeaa3;
+  --danger:#ff9a90; --danger-bg:#3a1a18; --ok:#86d6a8; --ok-bg:#14301f; --warn:#f2b75c; --warn-bg:#35270f; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f141c; --surface:#161d28; --ink:#e4e9f1; --ink-2:#a3aebd; --line:#283244;
+  --accent:#86a8ff; --accent-soft:#1d2a47; --on-accent:#0d1530;
+  --mark:#4f4210; --mark-ink:#ffeaa3;
+  --danger:#ff9a90; --danger-bg:#3a1a18; --ok:#86d6a8; --ok-bg:#14301f; --warn:#f2b75c; --warn-bg:#35270f; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.85;padding-inline:16px;padding-block:0 56px}
+h1,h2,h3,h4{line-height:1.5;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:800}
+h2{font-size:1.3rem;font-weight:800}
+h3{font-size:1.02rem;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--f-mono);direction:ltr;unicode-bidi:isolate;font-size:.85em}
+.wrap{max-width:900px;margin-inline:auto}
+
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:8px 16px}
+.tabs .wrap{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+.tabs a{flex:0 0 auto;font-size:.8rem;text-decoration:none;color:var(--ink-2);padding:3px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface)}
+.tabs a:hover{color:var(--accent);border-color:var(--accent)}
+
+.top{padding-block:28px 8px}
+.secret{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.04em;color:var(--danger);background:var(--danger-bg);padding:2px 10px;border-radius:99px;margin-bottom:10px}
+.top p{color:var(--ink-2);margin-top:8px;max-width:70ch}
+.meta{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.meta div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px;font-size:.88rem}
+.meta b{display:block;font-size:.72rem;color:var(--ink-2);font-weight:500}
+
+.block{margin-top:22px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+.block > h2{display:flex;gap:10px;align-items:baseline;margin-bottom:12px}
+.block > h2 .n{color:var(--accent);font-variant-numeric:tabular-nums}
+.lead{color:var(--ink-2);margin-bottom:12px}
+.stack{display:grid;gap:12px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.sub{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;min-width:0}
+.sub h3{margin-bottom:4px}
+.sub p,.sub li{color:var(--ink-2);font-size:.93rem}
+ul.l{margin:4px 0 0;padding-inline-start:1.2em}
+ul.l li+li{margin-top:4px}
+
+.say{background:var(--mark);color:var(--mark-ink);border-radius:8px;padding:10px 14px;font-weight:500}
+.say::before{content:"بگو: ";font-weight:800}
+.avoid{color:var(--danger);font-size:.9rem}
+.avoid::before{content:"نگو: ";font-weight:800}
+.alert{border:1px solid var(--danger);background:var(--danger-bg);border-radius:var(--r);padding:14px 16px}
+.alert h3{color:var(--danger);margin-bottom:6px}
+.alert li{color:var(--ink)}
+.okbox{border:1px solid var(--ok);background:var(--ok-bg);border-radius:var(--r);padding:12px 14px}
+
+.goal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.goal div{border-radius:var(--r);padding:12px 14px;border:1px solid var(--line)}
+.goal div:nth-child(1){background:var(--ok-bg);border-color:var(--ok)}
+.goal div:nth-child(2){background:var(--accent-soft);border-color:var(--accent)}
+.goal div:nth-child(3){background:var(--warn-bg);border-color:var(--warn)}
+.goal b{display:block;font-size:.8rem}
+.goal p{font-size:.92rem}
+
+.check{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.check li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;padding:6px 8px;border-radius:8px}
+.check li:hover{background:var(--accent-soft)}
+.check input{width:18px;height:18px;margin-top:5px;accent-color:var(--accent)}
+.check label{cursor:pointer}
+.check input:checked + label{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--ink-2)}
+.check small{display:block;color:var(--ink-2);text-decoration:none}
+.progress{font-size:.8rem;color:var(--ink-2);margin-bottom:6px}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.9rem}
+th,td{text-align:start;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--accent-soft);font-weight:700;font-size:.82rem}
+tr:last-child td{border-bottom:0}
+tfoot td{font-weight:800;background:var(--accent-soft)}
+
+.agenda{display:grid;gap:0;border-inline-start:2px solid var(--accent);margin-inline-start:6px}
+.agenda div{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;padding:8px 14px 8px 0;position:relative}
+.agenda div::before{content:"";position:absolute;inset-inline-start:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.agenda time{font-family:var(--f-mono);font-size:.82rem;color:var(--accent);padding-inline-start:12px;direction:ltr;text-align:end;unicode-bidi:isolate}
+.agenda p{color:var(--ink-2);font-size:.92rem}
+
+.qgroup h3{margin-bottom:4px}
+.qgroup ol{margin:0;padding-inline-start:1.3em}
+.qgroup li{margin-top:4px}
+.must{color:var(--danger);font-weight:800}
+
+.obj{display:grid;gap:10px}
+.obj .sub q{display:block;font-weight:700;color:var(--ink);quotes:"«" "»"}
+
+.calc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.calc label{display:grid;gap:4px;font-size:.82rem;color:var(--ink-2)}
+.calc input{font:inherit;font-size:1rem;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+.note{font-size:.8rem;color:var(--warn)}
+.out td.p{font-weight:800;color:var(--accent)}
+
+.tpl{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:14px;font-size:.93rem}
+.btn{font:inherit;font-size:.85rem;font-weight:700;border:0;border-radius:8px;padding:7px 14px;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.status{font-size:.82rem;color:var(--ok)}
+textarea{font:inherit;width:100%;min-height:220px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);color:var(--ink);resize:vertical;line-height:1.9}
+
+@media (max-width:720px){
+  .cols,.cols3,.goal,.calc{grid-template-columns:minmax(0,1fr)}
+  .block{padding:16px}
+  .agenda div{grid-template-columns:72px minmax(0,1fr)}
+}
+@media print{
+  :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--ink:#142033;--ink-2:#536074;--line:#dbe1e9;--accent:#2350b8;--accent-soft:#eef2fc;--on-accent:#fff;--mark:#ffeaa3;--mark-ink:#3a2c00;--danger:#b42318;--danger-bg:#fdecea;--ok:#146c43;--ok-bg:#e2f3e9;--warn:#8a5300;--warn-bg:#fdf1dc;color-scheme:light}
+  .tabs,.btn,.row{display:none}
+  body{padding:0;font-size:11.5pt}
+  .block{break-inside:auto;border:0;padding:0;margin-top:18px}
+  .sub,.say,.alert,.table-wrap,.goal div{break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  textarea{min-height:120mm}
+}
+@page{size:A4;margin:14mm 12mm}
+</style>
+</head>
+<body>
+
+<nav class="tabs" aria-label="بخش‌ها"><div class="wrap">
+  <a href="#goal">هدف</a><a href="#prep">آمادگی</a><a href="#verify">تأیید داده‌ها</a><a href="#facts">شناسنامه</a><a href="#agenda">برنامهٔ جلسه</a>
+  <a href="#findings">یافته‌ها</a><a href="#questions">سؤال‌ها</a><a href="#objections">اعتراض‌ها</a><a href="#pricing">قیمت</a>
+  <a href="#lines">خطوط قرمز</a><a href="#after">بعد از بله</a><a href="#followup">پیگیری</a><a href="#notes">یادداشت</a>
+</div></nav>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="secret">محرمانه · فقط برای استفادهٔ شخصی؛ به مشتری نشان داده نشود</span>
+  <h1>راهنمای جلسه با آقای ثانوی</h1>
+  <p>برگهٔ آمادگی برای جلسه با مدیریت پارسه تجارت. هدف این جلسه واگذاری مدیریت تولید محتوا، سوشال مدیا و سایت پارسه به تیم توست. این برگه کنار پروپوزال (<span class="mono">proposal.html</span>) استفاده می‌شود و هر چیزی را که باید بدانی، بپرسی، بگویی یا نگویی یک‌جا آورده است.</p>
+  <div class="meta">
+    <div><b>طرف جلسه</b>جناب آقای ثانوی، صاحب برند پارسه تجارت</div>
+    <div><b>محل احتمالی</b>مشهد، بلوار کلاهدوز ۱۱، پلاک ۷۱، واحد ۶</div>
+    <div><b>مدت پیشنهادی</b>۶۰ دقیقه</div>
+    <div><b>مسئول از طرف ما</b>آرش سجادی، مدیر پروژه</div>
+  </div>
+</header>
+
+<!-- 1 GOAL -->
+<section class="block" id="goal">
+  <h2><span class="n">۱</span>هدف جلسه</h2>
+  <p class="lead">از جلسه بدون یکی از این سه نتیجه بیرون نیا. اول برای ایده‌آل تلاش کن و فقط اگر لازم شد سراغ سطح بعدی برو.</p>
+  <div class="goal">
+    <div><b>ایده‌آل</b><p>توافق روی بستهٔ «رشد» به‌همراه پروژهٔ ریدیزاین و تعیین تاریخ امضای قرارداد و تحویل دسترسی‌ها.</p></div>
+    <div><b>قابل قبول</b><p>توافق روی شروع فاز صفر (ممیزی پولی دوهفته‌ای) که مبلغش در صورت ادامهٔ همکاری از قرارداد کم شود.</p></div>
+    <div><b>حداقل</b><p>تعیین تاریخ جلسهٔ دوم با حضور همهٔ تصمیم‌گیرندگان و دریافت دسترسی فقط‌خواندنی برای ممیزی.</p></div>
+  </div>
+</section>
+
+<!-- 2 PREP -->
+<section class="block" id="prep">
+  <h2><span class="n">۲</span>چک‌لیست آمادگی</h2>
+  <p class="progress" id="prog" aria-live="polite"></p>
+  <div class="cols">
+    <div class="sub">
+      <h3>۴۸ ساعت قبل</h3>
+      <ul class="check">
+        <li><input type="checkbox" id="c1"><label for="c1">جاهای خالی زرد پروپوزال را پر کن<small>نام تیم، تلفن، ایمیل، مبلغ سه بسته، مبلغ پنج پروژهٔ یک‌باره و قیمت نمونه در صفحهٔ محصول. برای مبالغ از ماشین‌حساب بخش ۹ استفاده کن.</small></label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">موارد بخش ۳ (تأیید داده‌ها) را روی سایت زنده چک کن</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">سرعت سایت را با PageSpeed Insights اندازه بگیر<small>نشانی <span class="mono">pagespeed.web.dev</span>. عدد LCP و امتیاز موبایل را یادداشت کن تا شفاهی بگویی.</small></label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">حساب‌های اجتماعی پارسه را پیدا کن<small>آیدی اینستاگرام و تلگرام، تعداد دنبال‌کننده، تاریخ آخرین پست، میانگین بازدید. اگر حسابی وجود ندارد، خودش یک یافته است.</small></label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">«پخش کوثر» و «پارسه تجارت مشهد» را در گوگل، گوگل‌مپ، نشان و بلد جست‌وجو کن</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">دو یا سه رقیب مشهدی را ببین و یک مقایسهٔ کوتاه آماده کن<small>مثلاً پخش‌های لوازم آرایشگاهی که در اینستاگرام فعال‌اند.</small></label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">فایل BRANDKIT.md و اسکرین‌شات‌های بستهٔ استخراج را با بخش ممیزی پروپوزال تطبیق بده</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">سه نمونه‌کار مرتبط انتخاب کن<small>ترجیحاً فروشگاهی، B2B یا برند محلی؛ با عدد نتیجه اگر داری.</small></label></li>
+      </ul>
+    </div>
+    <div class="sub">
+      <h3>روز جلسه</h3>
+      <ul class="check">
+        <li><input type="checkbox" id="c9"><label for="c9">دو نسخهٔ چاپی رنگی A4 از پروپوزال<small>یکی برای آقای ثانوی، یکی برای خودت. از مرورگر با «Print → Save as PDF» هم یک PDF بگیر.</small></label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">PDF پروپوزال روی لپ‌تاپ و گوشی، بدون نیاز به اینترنت<small>نسخهٔ HTML فونت را از اینترنت می‌گیرد. بدون اینترنت با فونت جایگزین نمایش داده می‌شود، پس PDF مطمئن‌تر است.</small></label></li>
+        <li><input type="checkbox" id="c11"><label for="c11">لپ‌تاپ شارژشده؛ سایت فعلی پارسه در یک تب و کانسپت‌ها در تب دیگر</label></li>
+        <li><input type="checkbox" id="c12"><label for="c12">کارت ویزیت، دفترچه، این برگه به‌صورت چاپی</label></li>
+        <li><input type="checkbox" id="c13"><label for="c13">ده دقیقه زودتر برس</label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3 VERIFY -->
+<section class="block" id="verify">
+  <h2><span class="n">۳</span>پیش از جلسه تأیید کن</h2>
+  <p class="lead">سایت پارسه و فایل زیپ از محیطی که این تحلیل در آن انجام شد در دسترس نبودند (دسترسی شبکه محدود بود). تحلیل بر پایهٔ داده‌هایی است که خودت استخراج کرده بودی، به‌علاوهٔ نتایج جست‌وجوی وب. این موارد را خودت روی سایت زنده چک کن و فقط موارد تأییدشده را در جلسه بگو.</p>
+  <div class="alert">
+    <h3>مهم‌ترین مورد: فاصلهٔ احتمالی قیمت سایت با بازار</h3>
+    <ul class="l">
+      <li>نسخه‌ای از سایت پارسه که در موتور جست‌وجو ثبت شده، قیمت سشوار پرومکس مدل ۷۲۰۰ را <b class="num">۱۹٬۷۳۰٬۰۰۰ ریال</b> (حدود ۲ میلیون تومان) نشان می‌دهد.</li>
+      <li>در همین زمان فروشگاه‌های آنلاین مثل ترب و تکنولایف همین مدل را حدود <b class="num">۶ تا ۸ میلیون تومان</b> قیمت زده‌اند.</li>
+      <li>اگر سایت هنوز همین قیمت را نشان می‌دهد، قوی‌ترین برگ تو در جلسه است: یا هر سفارش آنلاین زیان است، یا سفارش لغو می‌شود و اعتماد مشتری از بین می‌رود. با احترام و به‌عنوان «چیزی که دیدیم» مطرح کن، نه به‌عنوان اشتباه.</li>
+      <li>ممکن است نسخهٔ ثبت‌شده قدیمی باشد یا مدل دیگری باشد. اگر تأیید نشد، اصلاً مطرحش نکن.</li>
+    </ul>
+  </div>
+  <div class="stack" style="margin-top:12px">
+    <div class="sub"><h3>ادعای «تولیدکننده»</h3><p>همان متن ثبت‌شده در جست‌وجو، پرومکس را طوری معرفی می‌کند که انگار پارسه تولیدکنندهٔ آن است. اگر پارسه فقط پخش‌کننده است، این ادعا ریسک حقوقی و اعتباری دارد. با سؤال «رابطهٔ شما با برندها دقیقاً چیست؟» به آن برس. قبل از انتشار هر محتوا هم عبارت درست را تأیید بگیر: «نمایندهٔ رسمی»، «پخش انحصاری» یا «توزیع‌کننده». در پروپوزال عبارت «پخش‌کنندهٔ رسمی» در کانسپت‌ها آمده است.</p></div>
+    <div class="sub"><h3>موارد دیگری که فرضیه‌اند</h3><ul class="l"><li>کندی سایت روی موبایل (با PageSpeed تأیید کن)</li><li>نبود مسیر ثبت‌نام همکار و قیمت عمده (منو و صفحات را کامل بگرد)</li><li>وضعیت حساب‌های اجتماعی</li><li>استفاده از فونت ایران‌سنس بدون لایسنس (فقط بپرس؛ اتهام نزن)</li></ul></div>
+    <div class="okbox"><b>از داده‌های خودت (قابل اتکا):</b> پالت رنگ، ۶۰ محصول، ۹۵ لینک منو، ۹۱ تصویر، ۸ فایل فونت در سه خانواده، قیمت ریالی، ایمیل جیمیل، اینماد ۳۹۶۶۳۴، بستر پرستاشاپ، آدرس و تلفن‌ها.</div>
+  </div>
+</section>
+
+<!-- 4 FACTS -->
+<section class="block" id="facts">
+  <h2><span class="n">۴</span>شناسنامهٔ سریع پارسه</h2>
+  <div class="table-wrap">
+    <table>
+      <tbody class="num">
+        <tr><th scope="row">نام</th><td>شرکت پارسه تجارت بهداشت (پخش کوثر سابق)</td></tr>
+        <tr><th scope="row">تأسیس</th><td>۱۳۷۹؛ حدود ۲۶ سال سابقه تا امروز (۱۴۰۵)</td></tr>
+        <tr><th scope="row">فعالیت</th><td>پخش انحصاری و عمدهٔ لوازم برقی آرایشگاهی و بهداشتی در خراسان رضوی، شمالی و جنوبی</td></tr>
+        <tr><th scope="row">برندها</th><td>پرومکس، کوئین، بن‌مورا؛ مالیزیا و اینتسا (ایتالیا، از گروه Mirato)</td></tr>
+        <tr><th scope="row">تماس</th><td>تلفن <span class="mono">051-37601270</span> · فکس <span class="mono">051-38450076</span> · <span class="mono">misamsanavigaroosi@gmail.com</span></td></tr>
+        <tr><th scope="row">اینماد</th><td>۳۹۶۶۳۴</td></tr>
+        <tr><th scope="row">سایت</th><td>parsehtrade.com، پرستاشاپ، ۶۰ محصول، قیمت به ریال</td></tr>
+        <tr><th scope="row">رنگ‌ها</th><td><span class="mono">#009DAD</span> اصلی، <span class="mono">#29BDBD</span> لوگو، <span class="mono">#414042</span> متن، <span class="mono">#CD0A0A</span> هشدار</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 5 AGENDA -->
+<section class="block" id="agenda">
+  <h2><span class="n">۵</span>برنامهٔ ۶۰ دقیقه‌ای جلسه</h2>
+  <div class="agenda">
+    <div><time>00–05</time><div><h3>آشنایی و احترام</h3><p>قدردانی از ۲۵ سال سابقه، معرفی کوتاه خودت و هدف جلسه.</p></div></div>
+    <div><time>05–20</time><div><h3>گوش دادن</h3><p>پنج یا شش سؤال ستاره‌دار بخش ۷. بیشتر بشنو تا بگویی و نکته بنویس.</p></div></div>
+    <div><time>20–35</time><div><h3>ارائهٔ یافته‌ها و راهبرد</h3><p>سه یافتهٔ اصلی، جایگاه‌یابی، کانسپت صفحهٔ اصلی و اینستاگرام. یافته‌ها را به چیزهایی که خودش در ۱۵ دقیقهٔ قبل گفت وصل کن.</p></div></div>
+    <div><time>35–45</time><div><h3>نقشهٔ راه و بسته‌ها</h3><p>منطق «قبل از اسفند»، سپس سه بسته؛ بستهٔ رشد را پیشنهاد بده.</p></div></div>
+    <div><time>45–55</time><div><h3>پرسش‌ها و نگرانی‌ها</h3><p>از بخش ۸ و ۹ استفاده کن. اگر جواب سؤالی را نمی‌دانی، بگو «بررسی می‌کنم و تا فردا خبر می‌دهم».</p></div></div>
+    <div><time>55–60</time><div><h3>قدم بعدی مشخص</h3><p>تاریخ، تصمیم‌گیرنده، فهرست دسترسی‌ها. جملهٔ پایانی را از همین بخش بخوان.</p></div></div>
+  </div>
+  <div class="stack" style="margin-top:14px">
+    <h3>جملهٔ شروع</h3>
+    <p class="say">آقای ثانوی، ممنون که وقت گذاشتید. پیش از جلسه سایت و داده‌های پارسه را با دقت بررسی کردیم. چیزی که بیش از همه توجه ما را جلب کرد این بود که شما بیش از ۲۵ سال در این بازار اعتبار ساخته‌اید، اعتباری که خیلی از رقبا ندارند. پیشنهاد امروز ما این است که همین اعتبار در فضای دیجیتال هم دیده شود. ولی قبل از اینکه چیزی ارائه کنم، دوست دارم از خودتان بشنوم: امروز مهم‌ترین هدف یا دغدغه‌تان در فروش چیست؟</p>
+    <h3>جملهٔ پایانی</h3>
+    <p class="say">اگر موافق باشید، قدم بعدی این است که [روز و تاریخ] قرارداد را نهایی کنیم و همان روز فهرست دسترسی‌ها را تحویل بگیرم تا فاز صفر از هفتهٔ بعد شروع شود. چه کسی از طرف شما مسئول تأیید محتوا خواهد بود؟</p>
+    <div class="sub"><h3>آداب جلسه</h3><ul class="l">
+      <li>پانزده دقیقهٔ اول بیشتر گوش بده. هر چه او بیشتر حرف بزند، ارائهٔ تو دقیق‌تر می‌نشیند.</li>
+      <li>به جای «مشکل» بگو «فرصت» یا «جای بهبود». ممکن است سایت فعلی را یک آشنا یا یکی از اعضای خانواده ساخته باشد.</li>
+      <li>اصطلاح فنی نگو. LCP و کنتراست را به «سایت روی گوشی دیر باز می‌شود» و «زیر نور آفتاب خوانده نمی‌شود» ترجمه کن.</li>
+      <li>قیمت را بعد از نشان دادن ارزش بگو، نه در ابتدای جلسه.</li>
+      <li>دربارهٔ فالوور و فروش عدد قطعی نده.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 6 FINDINGS -->
+<section class="block" id="findings">
+  <h2><span class="n">۶</span>هفت یافته و طرز بیانشان</h2>
+  <p class="lead">سه مورد اول را حتماً بگو. بقیه را بر اساس زمان و علاقهٔ او انتخاب کن.</p>
+  <div class="stack">
+    <div class="sub"><h3>۱. سایت برای خرده‌فروشی ساخته شده، کسب‌وکار عمده است</h3>
+      <p class="say">بخش بزرگ فروش شما از همکاران عمده است، ولی سایت الان فقط برای مشتری خرده چیده شده. همکاری که وارد سایت می‌شود راهی برای ثبت‌نام یا دیدن قیمت همکاری ندارد.</p>
+      <p class="avoid">سایتتان اشتباه ساخته شده.</p></div>
+    <div class="sub"><h3>۲. قیمت ریالی و به‌روز بودن قیمت‌ها</h3>
+      <p class="say">مشتری ایرانی به تومان فکر می‌کند. [فقط اگر تأیید شد:] قیمت پرومکس ۷۲۰۰ در سایت با قیمت بازار فاصلهٔ زیادی دارد. اگر کسی آنلاین سفارش بدهد، یا ضرر می‌کنید یا باید سفارش را لغو کنید.</p>
+      <p class="avoid">قیمت‌هایتان غلط است.</p></div>
+    <div class="sub"><h3>۳. سابقهٔ ۲۵ ساله دیده نمی‌شود</h3>
+      <p class="say">بزرگ‌ترین مزیت شما سابقه و اصالت کالاست، و این در سایت و صفحه‌ها برجسته نیست. نام پخش کوثر هم هنوز در ذهن بازار سرمایه است و باید به نام پارسه منتقل شود.</p></div>
+    <div class="sub"><h3>۴. منوی شلوغ</h3>
+      <p class="say">منوی سایت ۹۵ لینک دارد، در حالی که کل محصولات ۶۰ تاست. مشتری در منو گم می‌شود. ساختار را ساده می‌کنیم.</p></div>
+    <div class="sub"><h3>۵. رنگ برند و خوانایی</h3>
+      <p class="say">رنگ فیروزه‌ای شما را نگه می‌داریم. فقط برای دکمه‌ها و متن یک درجه عمیق‌ترش می‌کنیم تا روی گوشی و زیر نور آفتاب راحت خوانده شود.</p>
+      <p class="avoid">استاندارد WCAG را رعایت نکرده‌اید.</p></div>
+    <div class="sub"><h3>۶. فونت‌ها</h3>
+      <p class="say">سایت از سه فونت مختلف استفاده می‌کند. یکی‌شان فونت تجاری است و اگر لایسنسش خریداری نشده، بهتر است با یک فونت آزاد جایگزین شود.</p></div>
+    <div class="sub"><h3>۷. ایمیل رسمی</h3>
+      <p class="say">ایمیل شرکت روی جیمیل است. یک ایمیل روی دامنهٔ خود پارسه، مثل info@parsehtrade.com، برای همکاران و تأمین‌کننده‌ها حرفه‌ای‌تر است و هزینه‌ای هم ندارد.</p></div>
+  </div>
+</section>
+
+<!-- 7 QUESTIONS -->
+<section class="block" id="questions">
+  <h2><span class="n">۷</span>سؤال‌های کشف نیاز</h2>
+  <p class="lead">سؤال‌های <span class="must">★</span> را حتماً بپرس. جواب‌ها اندازهٔ بسته، قیمت و لحن محتوا را تعیین می‌کنند.</p>
+  <div class="cols">
+    <div class="sub qgroup"><h3>کسب‌وکار و هدف</h3><ol>
+      <li><span class="must">★</span> مهم‌ترین هدف یک سال آینده چیست؟ شهرهای جدید، فروش بیشتر یک برند خاص، یا فروش آنلاین؟</li>
+      <li><span class="must">★</span> سهم فروش عمده و خرده چقدر است؟ چه سهمی از سایت می‌آید؟</li>
+      <li>چند همکار فعال دارید و همکار جدید از چه راهی پیدا می‌کنید؟</li>
+      <li>کدام برند یا کالا بیشترین سود را دارد و کدام را می‌خواهید بیشتر بفروشید؟</li>
+      <li>اوج و افت فروش در چه ماه‌هایی است؟</li>
+    </ol></div>
+    <div class="sub qgroup"><h3>برند و نمایندگی</h3><ol>
+      <li><span class="must">★</span> رابطهٔ پارسه با برندها دقیقاً چیست؟ نمایندهٔ رسمی، پخش انحصاری استانی، واردکننده یا صاحب برند؟</li>
+      <li>اجازهٔ استفاده از لوگو و محتوای برندها در تبلیغات را دارید؟ واردکننده محتوا یا عکس می‌دهد؟</li>
+      <li>با کالای تقلبی در بازار درگیر هستید؟</li>
+    </ol></div>
+    <div class="sub qgroup"><h3>فروش و عملیات</h3><ol>
+      <li><span class="must">★</span> همکار امروز چطور سفارش می‌دهد؟ ویزیتور، تلفن یا واتس‌اپ؟</li>
+      <li>لیست قیمت هر چند وقت عوض می‌شود و چه کسی آن را به‌روز می‌کند؟ از چه نرم‌افزار حسابداری استفاده می‌کنید؟</li>
+      <li>فرایند گارانتی و تعمیر چگونه است؟</li>
+      <li>ارسال به شهرستان‌ها چطور انجام می‌شود؟</li>
+    </ol></div>
+    <div class="sub qgroup"><h3>بازاریابی فعلی</h3><ol>
+      <li><span class="must">★</span> الان چه کسی سایت و اینستاگرام را مدیریت می‌کند؟ قراردادی هست که باید تمام شود؟</li>
+      <li>قبلاً با آژانس یا فریلنسر کار کرده‌اید؟ چه چیزی خوب پیش نرفت؟</li>
+      <li>حضور آنلاین کدام رقیب را دوست دارید؟</li>
+    </ol></div>
+    <div class="sub qgroup"><h3>فنی</h3><ol>
+      <li>سایت را چه کسی ساخته، هاست کجاست و دسترسی‌ها دست کیست؟</li>
+      <li>درگاه پرداخت فعال است؟ ماهانه چند سفارش آنلاین دارید؟</li>
+    </ol></div>
+    <div class="sub qgroup"><h3>تصمیم و بودجه</h3><ol>
+      <li><span class="must">★</span> چه کسی جز شما در این تصمیم نقش دارد؟</li>
+      <li><span class="must">★</span> برای این کار چه بودجه‌ای در نظر دارید؟ اگر جواب نداد: «بسته‌ها از [مبلغ بستهٔ پایه] شروع می‌شوند؛ با برنامهٔ شما هم‌خوان است؟»</li>
+      <li>می‌خواهید از چه زمانی شروع کنیم؟ موعد خاصی در نظر دارید؟</li>
+    </ol></div>
+  </div>
+</section>
+
+<!-- 8 OBJECTIONS -->
+<section class="block" id="objections">
+  <h2><span class="n">۸</span>پاسخ به اعتراض‌ها و سؤال‌های احتمالی</h2>
+  <div class="obj">
+    <div class="sub"><q>مشتری‌های ما عمده‌اند و از ویزیتور خرید می‌کنند. اینستاگرام به چه کارمان می‌آید؟</q><p>آرایشگر ابزار را اول در اینستاگرام و در دست همکارش می‌بیند و بعد از ویزیتور سراغش را می‌گیرد. محتوای ما کار ویزیتورها را هم راحت می‌کند: کاتالوگ و ویدیوی آماده برای ارسال در واتس‌اپ. شهرهایی که ویزیتور کمتر می‌رود هم از همین راه پوشش داده می‌شوند.</p></div>
+    <div class="sub"><q>سایت فعلی کار می‌کند. چرا برای ریدیزاین هزینه کنیم؟</q><p>اول اصلاحات سریع روی همین سایت انجام می‌شود و نتیجه‌اش را در ماه اول می‌بینید. ریدیزاین برای امکاناتی است که سایت فعلی ندارد: پنل همکاران، قیمت عمده و سفارش سریع. چند نمونهٔ مشخص را هم نشان بده: قیمت، منو، رنگ دکمه.</p></div>
+    <div class="sub"><q>قیمت بالاست.</q><p>محدوده را کوچک کن، نه قیمت ساعتی را: از بستهٔ پایه یا فاز صفر شروع کن. هزینهٔ یک کارمند تمام‌وقت (حقوق، بیمه، تجهیزات) را با یک تیم کامل مقایسه کن. برای پیش‌پرداخت ۶ ماهه تخفیف بده، نه برای کار کمتر با همان خروجی.</p></div>
+    <div class="sub"><q>یکی از بچه‌های خودمان اینستاگرام را می‌چرخاند.</q><p>عالی است. او را نگه می‌داریم و منبع محتوای روزانه از دفتر و انبار می‌شود. استراتژی، طراحی، ویدیو و گزارش با ما. آموزشش هم با ما.</p></div>
+    <div class="sub"><q>تضمین فروش می‌دهید؟</q><p>فروش به قیمت، موجودی و تیم فروش هم بستگی دارد. ما خروجی‌ها، زمان‌بندی و شاخص‌های پیشرو را تضمین می‌کنیم: تعداد درخواست همکاری، سرعت پاسخ، رشد بازدید. ماهانه گزارش شفاف می‌دهیم و پس از حداقل مدت قرارداد هر وقت بخواهید با یک ماه اطلاع قطع می‌کنید.</p></div>
+    <div class="sub"><q>قبلاً با آژانس کار کردیم و نتیجه نگرفتیم.</q><p>اول بپرس دقیقاً چه چیزی خوب نبود و همان را در پیشنهادت پوشش بده. همهٔ حساب‌ها و دسترسی‌ها مال خود پارسه می‌ماند و هر ماه گزارش عددی می‌گیرند.</p></div>
+    <div class="sub"><q>اینستاگرام فیلتر است.</q><p>برای همین سایت، کانال واتس‌اپ و یک پیام‌رسان داخلی را هم داریم و سایت روی هاست داخلی می‌رود. اینستاگرام هنوز جایی است که آرایشگرها ابزار را می‌بینند.</p></div>
+    <div class="sub"><q>فعلاً فقط سایت را انجام دهید.</q><p>قبول کن؛ نقطهٔ ورود خوبی است. ریدیزاین به‌اضافهٔ راهبری ماهانهٔ سایت را پیشنهاد بده و توضیح بده که بدون محتوا، سایت جدید بازدیدکننده‌ای نخواهد داشت.</p></div>
+    <div class="sub"><q>کی نتیجه می‌بینیم؟</q><p>اصلاحات سریع در ماه اول. تعامل و درخواست از سوشال معمولاً از ماه دوم یا سوم. سئو چهار تا شش ماه.</p></div>
+    <div class="sub"><q>چند نفر روی کار ما هستند؟ اگر کاری داشتم با چه کسی تماس بگیرم؟</q><p>شش نقش تخصصی (فهرست در پروپوزال). نقطهٔ تماس فقط خودت هستی.</p></div>
+    <div class="sub"><q>محتوا را از کجا می‌آورید؟ ما وقت نداریم.</q><p>تولید با ماست. از پارسه فقط یک روز تولید در ماه، نمونهٔ کالا و حدود ۳۰ دقیقه در هفته برای تأیید محتوا لازم است.</p></div>
+    <div class="sub"><q>هزینهٔ تبلیغات هم با شماست؟</q><p>نه. بودجهٔ تبلیغات را خود پارسه مستقیم پرداخت می‌کند تا شفاف بماند. ما مدیریتش می‌کنیم. پیشنهاد: تبلیغات بعد از آماده‌شدن سایت جدید شروع شود.</p></div>
+  </div>
+</section>
+
+<!-- 9 PRICING -->
+<section class="block" id="pricing">
+  <h2><span class="n">۹</span>قیمت‌گذاری و مذاکره</h2>
+  <p class="lead">قیمت را از ساعت کار واقعی حساب کن، نه از حدس. نرخ ساعتی ترکیبی تیمت (میانگین هزینهٔ یک ساعت کار همهٔ نقش‌ها) را وارد کن تا قیمت هر بسته محاسبه شود.</p>
+  <div class="calc">
+    <label for="rate">نرخ ساعتی ترکیبی (تومان)<input id="rate" type="number" inputmode="numeric" min="0" step="10000" value="500000"></label>
+    <label for="margin">حاشیهٔ سود (درصد)<input id="margin" type="number" inputmode="numeric" min="0" max="200" step="5" value="25"></label>
+    <label for="tools">هزینهٔ ماهانهٔ ابزار و اشتراک‌ها (تومان)<input id="tools" type="number" inputmode="numeric" min="0" step="100000" value="3000000"></label>
+  </div>
+  <p class="note">اعداد پیش‌فرض فقط نمونه‌اند و پیشنهاد قیمت نیستند. نرخ واقعی تیم خودت را وارد کن. مقادیر فقط در همین مرورگر ذخیره می‌شوند.</p>
+  <div class="table-wrap out" style="margin-top:10px">
+    <table>
+      <thead><tr><th>خدمت</th><th>ساعت</th><th>هزینهٔ تمام‌شده</th><th>قیمت پیشنهادی (گرد شده)</th></tr></thead>
+      <tbody class="num" id="calcBody"></tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:18px">برآورد ساعت بستهٔ رشد (ماهانه)</h3>
+  <div class="table-wrap" style="margin-top:8px">
+    <table>
+      <thead><tr><th>کار</th><th>ساعت</th></tr></thead>
+      <tbody class="num">
+        <tr><td>استراتژی و تقویم محتوا</td><td>۸</td></tr>
+        <tr><td>نگارش متن (۱۲ پست، ۳۰ استوری، تلگرام)</td><td>۲۰</td></tr>
+        <tr><td>طراحی گرافیک (۱۲ پست، قالب استوری و لیست قیمت)</td><td>۳۰</td></tr>
+        <tr><td>روز تولید (فیلم‌برداری و عکاسی)</td><td>۱۰</td></tr>
+        <tr><td>تدوین ۶ ریلز</td><td>۲۱</td></tr>
+        <tr><td>مدیریت دایرکت و دیدگاه‌ها (یک ساعت در هر روز کاری)</td><td>۲۶</td></tr>
+        <tr><td>دو مقالهٔ سئو</td><td>۱۲</td></tr>
+        <tr><td>راهبری سایت (قیمت، کالا، امنیت، پشتیبان)</td><td>۱۲</td></tr>
+        <tr><td>گزارش و جلسهٔ ماهانه</td><td>۶</td></tr>
+        <tr><td>مدیریت پروژه</td><td>۱۶</td></tr>
+      </tbody>
+      <tfoot><tr><td>جمع</td><td class="num">۱۶۱</td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="cols" style="margin-top:14px">
+    <div class="sub"><h3>اهرم‌هایی که می‌توانی بدهی</h3><ul class="l">
+      <li>مبلغ فاز صفر در صورت امضای قرارداد از قرارداد کم شود</li>
+      <li>تخفیف پیش‌پرداخت ۶ ماهه</li>
+      <li>تخفیف ترکیبی برای ریدیزاین همراه با بستهٔ ماهانه</li>
+      <li>دورهٔ آزمایشی ۳ ماهه به جای ۶ ماهه، با همان قیمت ماهانه</li>
+    </ul></div>
+    <div class="sub"><h3>چیزهایی که نباید بدهی</h3><ul class="l">
+      <li>کار رایگان بیش از ممیزی مختصر</li>
+      <li>اصلاح نامحدود</li>
+      <li>حذف مدیریت پروژه برای کم کردن قیمت</li>
+      <li>پرداخت بودجهٔ تبلیغات از جیب تیم</li>
+      <li>قیمت زیر هزینهٔ تمام‌شده (ستون سوم جدول بالا)</li>
+    </ul></div>
+  </div>
+  <div class="sub" style="margin-top:12px"><h3>بندهای مهم قرارداد</h3><ul class="l">
+    <li>بازنگری قیمت هر سه ماه متناسب با تورم</li>
+    <li>فرایند تأیید: یک رابط، حداکثر ۴۸ ساعت؛ تأخیر در تأیید، زمان‌بندی را جابه‌جا می‌کند</li>
+    <li>دو مرحله اصلاح برای هر خروجی؛ بیشتر از آن ساعتی محاسبه می‌شود</li>
+    <li>مالکیت حساب‌ها، دامنه و فایل‌ها با پارسه، پس از تسویه</li>
+    <li>حق استفاده از کارها در نمونه‌کارهای تیم (با اجازه)</li>
+    <li>محرمانگی اطلاعات قیمت و همکاران پارسه</li>
+  </ul></div>
+</section>
+
+<!-- 10 RED LINES -->
+<section class="block" id="lines">
+  <h2><span class="n">۱۰</span>خطوط قرمز و نشانه‌های هشدار</h2>
+  <div class="cols">
+    <div class="sub"><h3>قول نده</h3><ul class="l">
+      <li>تعداد مشخص فالوور یا فروش</li>
+      <li>خرید فالوور یا لایک، یا هر رشد مصنوعی</li>
+      <li>نظر و تجربهٔ ساختگی مشتری</li>
+      <li>استفاده از نام برند رقیب در تبلیغات</li>
+      <li>تاریخ تحویل پیش از گرفتن دسترسی‌ها</li>
+      <li>ادعای «نمایندگی رسمی» بدون مدرک</li>
+    </ul></div>
+    <div class="sub"><h3>نشانه‌های هشدار</h3><ul class="l">
+      <li>چند تصمیم‌گیرنده بدون یک رابط مشخص</li>
+      <li>اصرار بر پرداخت پس از نتیجه یا پرداخت با تأخیر</li>
+      <li>درخواست یک ماه کار رایگان به‌عنوان نمونه</li>
+      <li>سایت کامل در دو هفته</li>
+      <li>واگذار نکردن دسترسی یا نامشخص بودن مالکیت حساب‌ها</li>
+      <li>انتظار اینکه تیم تو قیمت‌گذاری یا فروش را هم مدیریت کند</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 11 AFTER YES -->
+<section class="block" id="after">
+  <h2><span class="n">۱۱</span>بعد از «بله»</h2>
+  <div class="cols">
+    <div class="sub"><h3>دسترسی‌ها و دارایی‌ها</h3>
+      <ul class="check">
+        <li><input type="checkbox" id="a1"><label for="a1">پنل ثبت دامنه</label></li>
+        <li><input type="checkbox" id="a2"><label for="a2">هاست یا سرور (کنترل‌پنل یا SSH)</label></li>
+        <li><input type="checkbox" id="a3"><label for="a3">پنل مدیریت پرستاشاپ<small>یک کاربر جدا برای تیم؛ رمز مشترک نگیر.</small></label></li>
+        <li><input type="checkbox" id="a4"><label for="a4">پنل اینماد و درگاه پرداخت (فقط مشاهده)</label></li>
+        <li><input type="checkbox" id="a5"><label for="a5">Search Console و ابزار آمار، اگر هست</label></li>
+        <li><input type="checkbox" id="a6"><label for="a6">اینستاگرام با تأیید دومرحله‌ای<small>شماره و ایمیل بازیابی به نام شرکت بماند، نه تیم تو.</small></label></li>
+        <li><input type="checkbox" id="a7"><label for="a7">ادمین کانال تلگرام و شمارهٔ واتس‌اپ بیزینس</label></li>
+        <li><input type="checkbox" id="a8"><label for="a8">فایل لایه‌باز لوگو (SVG، AI یا PDF)</label></li>
+        <li><input type="checkbox" id="a9"><label for="a9">لیست قیمت و موجودی و نام نرم‌افزار حسابداری</label></li>
+        <li><input type="checkbox" id="a10"><label for="a10">مدرک نمایندگی یا اجازهٔ استفاده از نام و لوگوی برندها</label></li>
+        <li><input type="checkbox" id="a11"><label for="a11">عکس‌ها و ویدیوهای موجود</label></li>
+        <li><input type="checkbox" id="a12"><label for="a12">نام و شمارهٔ رابط تأیید محتوا و کارشناس فروش</label></li>
+      </ul>
+    </div>
+    <div class="sub"><h3>سی روز اول</h3>
+      <div class="stack">
+        <div><b>هفتهٔ ۱</b><p>کارگاه شروع با مدیریت و فروش، گرفتن دسترسی‌ها، نصب ابزار آمار، جمع‌آوری فایل‌های برند، تعیین فرایند تأیید.</p></div>
+        <div><b>هفتهٔ ۲</b><p>ممیزی کامل، بررسی رقبا، تقویم محتوای ماه اول، برنامه‌ریزی روز تولید، فهرست اصلاحات سریع.</p></div>
+        <div><b>هفتهٔ ۳</b><p>تحویل گزارش فاز صفر. شروع اصلاحات سریع: قیمت تومانی، دکمهٔ واتس‌اپ، ایمیل دامنه، ثبت در نقشه‌ها. انتشار اولین پست‌ها و راه‌اندازی کانال همکاران.</p></div>
+        <div><b>هفتهٔ ۴</b><p>اولین روز تولید، شروع معماری اطلاعات و وایرفریم سایت جدید، گزارش و جلسهٔ ماه اول.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 FOLLOW-UP -->
+<section class="block" id="followup">
+  <h2><span class="n">۱۲</span>پیام پیگیری بعد از جلسه</h2>
+  <p class="lead">همان روز، حداکثر تا شب، در واتس‌اپ یا ایمیل بفرست. جاهای داخل کروشه را پر کن.</p>
+  <div class="tpl" id="tpl">جناب آقای ثانوی، سلام و وقت بخیر.
+از فرصتی که امروز در اختیار ما گذاشتید سپاسگزارم. همان‌طور که در جلسه مطرح شد، خلاصهٔ پیشنهاد ما این است:
+۱. شروع با فاز صفر (ممیزی دوهفته‌ای) و اصلاحات فوری سایت فعلی
+۲. مدیریت محتوا و شبکه‌های اجتماعی در قالب بستهٔ [نام بسته]
+۳. ریدیزاین سایت، با هدف آماده‌شدن پیش از اسفند و فصل پیش‌خرید شب عید
+فایل کامل پروپوزال پیوست است. اگر موافق باشید، [روز و تاریخ] برای جمع‌بندی و امضای قرارداد خدمت می‌رسم.
+با احترام،
+آرش سجادی</div>
+  <div class="row"><button class="btn" id="copyBtn" type="button">کپی متن پیام</button><span class="status" id="copyStatus" aria-live="polite"></span></div>
+</section>
+
+<!-- 13 NOTES -->
+<section class="block" id="notes">
+  <h2><span class="n">۱۳</span>یادداشت‌های جلسه</h2>
+  <p class="lead">در جلسه همین‌جا بنویس. متن فقط در همین مرورگر ذخیره می‌شود؛ بعد از جلسه جای امن‌تری کپی کن.</p>
+  <label for="notesBox" class="lead" style="display:block">جواب سؤال‌های ستاره‌دار، بودجه، تصمیم‌گیرنده، تاریخ قدم بعدی:</label>
+  <textarea id="notesBox" placeholder="مثلاً: سهم فروش عمده حدود … درصد. تصمیم‌گیرنده: … . بودجه: … . جلسهٔ بعد: …"></textarea>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var KEY='parseh-guide-v1';
+  var state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ state={}; }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+
+  // checklists
+  var boxes=document.querySelectorAll('.check input[type=checkbox]');
+  var prepBoxes=document.querySelectorAll('#prep .check input');
+  var prog=document.getElementById('prog');
+  function fa(n){ return Number(n).toLocaleString('fa-IR'); }
+  function updateProg(){
+    var done=0; prepBoxes.forEach(function(b){ if(b.checked) done++; });
+    prog.textContent=fa(done)+' از '+fa(prepBoxes.length)+' کار آمادگی انجام شده';
+  }
+  boxes.forEach(function(b){
+    if(state['cb_'+b.id]) b.checked=true;
+    b.addEventListener('change',function(){ state['cb_'+b.id]=b.checked; save(); updateProg(); });
+  });
+  updateProg();
+
+  // notes
+  var notes=document.getElementById('notesBox');
+  if(state.notes) notes.value=state.notes;
+  notes.addEventListener('input',function(){ state.notes=notes.value; save(); });
+
+  // pricing calculator
+  var rows=[
+    {name:'بستهٔ پایه (ماهانه)',h:76,monthly:true},
+    {name:'بستهٔ رشد (ماهانه)',h:161,monthly:true},
+    {name:'بستهٔ پیشرو (ماهانه، بدون بودجهٔ تبلیغات)',h:239,monthly:true},
+    {name:'فاز صفر: ممیزی دوهفته‌ای',h:30,monthly:false},
+    {name:'ریدیزاین و بازسازی سایت',h:350,monthly:false},
+    {name:'عکاسی یکدست ۶۰ کالا',h:40,monthly:false}
+  ];
+  var ids=['rate','margin','tools'];
+  ids.forEach(function(id){
+    var el=document.getElementById(id);
+    if(state['in_'+id]!=null && state['in_'+id]!=='') el.value=state['in_'+id];
+    el.addEventListener('input',function(){ state['in_'+id]=el.value; save(); calc(); });
+  });
+  function roundTo(n,step){ return Math.round(n/step)*step; }
+  function calc(){
+    var rate=Math.max(0,parseFloat(document.getElementById('rate').value)||0);
+    var margin=Math.max(0,parseFloat(document.getElementById('margin').value)||0)/100;
+    var tools=Math.max(0,parseFloat(document.getElementById('tools').value)||0);
+    var body=document.getElementById('calcBody'); body.innerHTML='';
+    rows.forEach(function(r){
+      var cost=r.h*rate+(r.monthly?tools:0);
+      var price=roundTo(cost*(1+margin),500000);
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td></td><td></td><td></td><td class="p"></td>';
+      tr.children[0].textContent=r.name;
+      tr.children[1].textContent=fa(r.h);
+      tr.children[2].textContent=fa(Math.round(cost))+' تومان';
+      tr.children[3].textContent=fa(price)+' تومان';
+      body.appendChild(tr);
+    });
+  }
+  calc();
+
+  // copy follow-up
+  var btn=document.getElementById('copyBtn'), st=document.getElementById('copyStatus'), tpl=document.getElementById('tpl');
+  function selectTpl(){
+    var r=document.createRange(); r.selectNodeContents(tpl);
+    var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  btn.addEventListener('click',function(){
+    var text=tpl.innerText;
+    try{
+      navigator.clipboard.writeText(text).then(function(){ st.textContent='متن کپی شد.'; },function(){ selectTpl(); st.textContent='متن انتخاب شد؛ با Ctrl+C کپی کن.'; });
+    }catch(e){ selectTpl(); st.textContent='متن انتخاب شد؛ با Ctrl+C کپی کن.'; }
+  });
+})();
+</script>
+</body>
+</html>
