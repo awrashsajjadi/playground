@@ -10,7 +10,7 @@ function devBanner(config: AppConfig): string {
   const lan = everyInterface
     ? Object.values(networkInterfaces()).flatMap((list) => list ?? []).filter((a) => a.family === 'IPv4' && !a.internal)
     : [];
-  const url = (host: string, path = '') => `http://${host}:${config.port}${path}`.padEnd(34);
+  const url = (host: string, path = '') => `http://${host}:${config.port}${path}`.padEnd(40);
   return [
     '',
     `  ${url('localhost')} فرم نظرسنجی`,
@@ -45,7 +45,11 @@ async function main(): Promise<void> {
     db,
     logger: config.env === 'production' ? productionLogger() : { level: 'info' },
   });
-  for (const warning of config.warnings) app.log.warn(warning);
+  // In development the warnings go straight to the console so they always print before the address banner.
+  for (const warning of config.warnings) {
+    if (config.env === 'development') console.warn(`⚠ ${warning}`);
+    else app.log.warn(warning);
+  }
 
   const shutdown = async (signal: string) => {
     app.log.info(`${signal} received, shutting down`);
