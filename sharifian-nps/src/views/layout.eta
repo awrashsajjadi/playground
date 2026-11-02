@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title><%= it.pageTitle ? it.pageTitle + ' | ' + it.survey.meta.title : it.survey.meta.title %></title>
+<meta name="description" content="<%= it.survey.meta.description %>">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FFFBF5">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fa_IR">
+<meta property="og:site_name" content="<%= it.survey.brand.name %>">
+<meta property="og:title" content="<%= it.survey.meta.title %>">
+<meta property="og:description" content="<%= it.survey.meta.description %>">
+<% if (it.h.hasAsset('img/og.png')) { %><meta property="og:image" content="<%= it.baseUrl %><%= it.h.asset('img/og.png') %>">
+<% } %><link rel="icon" href="<%= it.h.asset('img/favicon.svg') %>" type="image/svg+xml">
+<link rel="preload" href="<%= it.h.asset('fonts/Vazirmatn-NL-Regular.woff2') %>" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="<%= it.h.asset('fonts/Vazirmatn-NL-Bold.woff2') %>" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="<%= it.h.asset('css/form.css') %>">
+<% if (it.withScript) { %><script><%~ it.h.inlineScript %></script>
+<script defer src="<%= it.h.asset('build/form.js') %>"></script>
+<% } %></head>
+<body>
+<% if (it.test) { %><p class="test-banner" role="status"><%= it.survey.testBanner %></p>
+<% } %><header class="brand">
+<% if (it.h.hasAsset('img/logo.svg')) { %><img src="<%= it.h.asset('img/logo.svg') %>" alt="<%= it.survey.brand.name %>" height="32">
+<% } else { %><span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2.5c-4.4 3.6-6.6 7.2-6.6 10.8a6.6 6.6 0 0 0 13.2 0c0-3.6-2.2-7.2-6.6-10.8Z"/><path fill="none" stroke="#FFFBF5" stroke-width="1.6" stroke-linecap="round" d="M12 8.5v10M12 13l-2.6-2.2M12 15.6l2.6-2.2"/></svg><span><%= it.survey.brand.name %></span></span>
+<% } %></header>
+<main id="main" class="page">
+<%~ it.body %>
+</main>
+</body>
+</html>

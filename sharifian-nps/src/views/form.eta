@@ -1,0 +1,54 @@
+<% layout('./layout', { withScript: true }) %>
+<% const s = it.survey, v = it.values || {}, e = it.errors || {}; %>
+<div class="progress" aria-hidden="true"><span class="progress-bar"></span></div>
+<form id="nps" class="survey" method="post" action="/api/submit" novalidate data-start-step="<%= it.startStep %>">
+<input type="hidden" name="tk" value="<%= it.token %>">
+<input type="hidden" name="src" value="<%= it.src %>">
+<% if (it.rep) { %><input type="hidden" name="rep" value="<%= it.rep %>">
+<% } %><div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+
+<section class="step" data-step="1">
+<p class="intro"><%= s.intro %></p>
+<fieldset>
+<legend id="q1" class="question" tabindex="-1"><%= s.step1.question %></legend>
+<div class="scale">
+<% for (let i = 0; i <= 10; i++) { %><input class="sr-only" type="radio" name="score" id="score-<%= i %>" value="<%= i %>"<%~ String(v.score) === String(i) ? ' checked' : '' %>><label for="score-<%= i %>"><%= it.h.fa(i) %><% if (i === 0) { %><span class="sr-only"> (<%= s.step1.lowLabel %>)</span><% } else if (i === 10) { %><span class="sr-only"> (<%= s.step1.highLabel %>)</span><% } %></label>
+<% } %></div>
+<div class="scale-legend" aria-hidden="true"><span><%= it.h.fa(0) %> = <%= s.step1.lowLabel %></span><span><%= s.step1.highLabel %> = <%= it.h.fa(10) %></span></div>
+<p class="field-error" id="score-error" role="alert"<%~ e.score ? '' : ' hidden' %>><%= s.errors.score %></p>
+</fieldset>
+</section>
+
+<section class="step" data-step="2">
+<h2 id="q2" class="question" tabindex="-1"><%= s.step2.titles.fallback %></h2>
+<p class="hint" id="drivers-hint"><%= s.step2.hint %></p>
+<div class="chips" role="group" aria-labelledby="q2" aria-describedby="drivers-hint">
+<% for (const d of it.drivers) { %><input class="sr-only" type="checkbox" name="drivers" id="d-<%= d.id %>" value="<%= d.id %>"<%~ (v.drivers || []).includes(d.id) ? ' checked' : '' %>><label for="d-<%= d.id %>"><%= d.label %></label>
+<% } %></div>
+<label class="sr-only" for="comment"><%= s.step2.commentLabel %></label>
+<textarea id="comment" name="comment" rows="3" maxlength="<%= s.step2.commentMaxLength %>" placeholder="<%= s.step2.commentPlaceholder %>"<%~ e.comment ? ' aria-invalid="true"' : '' %>><%= v.comment || '' %></textarea>
+<p class="counter" id="comment-counter" aria-live="polite" hidden></p>
+<p class="field-error" id="comment-error" role="alert"<%~ e.comment ? '' : ' hidden' %>><%= s.errors.comment %></p>
+<div class="nav js-only">
+<button type="button" class="btn btn-ghost" data-prev><%= s.buttons.prev %></button>
+<button type="button" class="btn" data-next><%= s.buttons.next %></button>
+</div>
+</section>
+
+<section class="step" data-step="3">
+<label id="mobile-label" class="question" for="mobile"><%= s.step3.label %></label>
+<input id="mobile" name="mobile" type="tel" inputmode="numeric" autocomplete="tel" dir="ltr" maxlength="24" required placeholder="<%= s.step3.placeholder %>" value="<%= v.mobile || '' %>" aria-describedby="mobile-error privacy" aria-invalid="<%= e.mobile ? 'true' : 'false' %>">
+<p class="field-error" id="mobile-error" role="alert"<%~ e.mobile ? '' : ' hidden' %>><%= s.errors.mobile %></p>
+<label class="consent" id="consent"<%~ v.score !== undefined && v.score !== '' && Number(v.score) >= 9 ? ' hidden' : '' %>>
+<input type="checkbox" name="contact" value="1"<%~ v.contact ? ' checked' : '' %>>
+<span><%= s.step3.contactConsent %><span class="nojs-only"> <%= s.step3.contactConsentNoJs %></span></span>
+</label>
+<p class="privacy" id="privacy"><%= s.step3.privacy %></p>
+<p class="form-error" id="form-error" role="alert"<%~ it.formError ? '' : ' hidden' %>><%= it.formError %></p>
+<div class="nav">
+<button type="button" class="btn btn-ghost js-only" data-prev><%= s.buttons.prev %></button>
+<button type="submit" class="btn" data-submit><%= s.step3.submit %></button>
+</div>
+</section>
+</form>
+<script type="application/json" id="nps-config"><%~ it.h.json(it.client) %></script>

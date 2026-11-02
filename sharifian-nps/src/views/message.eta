@@ -1,0 +1,7 @@
+<% layout('./layout', { pageTitle: it.title, withScript: false }) %>
+<div class="message">
+<% if (it.emoji) { %><div class="message-emoji" aria-hidden="true"><%= it.emoji %></div>
+<% } %><h1 class="message-title"><%= it.title %></h1>
+<p class="message-text"><%= it.text %></p>
+<% if (it.shop) { %><a class="btn btn-ghost" href="<%= it.survey.brand.shopUrl %>"><%= it.survey.thanks.shopButton %></a>
+<% } %></div>

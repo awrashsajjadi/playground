@@ -1,0 +1,32 @@
+{
+  "name": "sharifian-nps",
+  "version": "0.2.0",
+  "private": true,
+  "description": "سامانه نظرسنجی NPS شریفیان",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "build": "node scripts/build-client.ts",
+    "dev": "node scripts/build-client.ts && node --env-file-if-exists=.env --watch src/server.ts",
+    "start": "node --env-file-if-exists=.env src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "screenshots": "node scripts/screenshots.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "eta": "4.6.0",
+    "fastify": "5.12.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "22.20.5",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}

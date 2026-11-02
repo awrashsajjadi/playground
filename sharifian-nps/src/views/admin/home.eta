@@ -1,0 +1,65 @@
+<% layout('./layout', { title: 'خانه' }) %>
+<% const st = it.stats, h = it.h; %>
+<% if (it.flash) { %><p class="banner <%= it.flashError ? 'banner-danger' : 'banner-ok' %>" role="status"><%= it.flash %></p>
+<% } %>
+<section class="card status status-<%= it.state %>">
+<div>
+<h1><%= it.state === 'open' ? 'نظرسنجی باز است' : it.state === 'not_open' ? 'نظرسنجی هنوز باز نشده' : 'نظرسنجی بسته شده' %></h1>
+<p class="muted">از <%= it.opensAt %> تا <%= it.closesAt %></p>
+</div>
+<strong class="countdown"><%= it.countdown %></strong>
+</section>
+
+<section class="kpis" aria-label="آمار سریع">
+<div class="kpi"><span class="kpi-label">پاسخ‌ها</span><strong class="kpi-value"><%= h.faNumber(st.live + st.demo) %></strong></div>
+<div class="kpi"><span class="kpi-label">NPS تا این لحظه</span><strong class="kpi-value" dir="ltr"><%= it.nps.nps === null ? '—' : h.faSigned(it.nps.nps) %></strong><% if (it.nps.moe !== null) { %><span class="kpi-sub">± <%= h.faNumber(it.nps.moe) %></span><% } %></div>
+<div class="kpi"><span class="kpi-label">مشتریان لیست</span><strong class="kpi-value"><%= h.faNumber(st.customers) %></strong></div>
+<div class="kpi"><span class="kpi-label">نرخ پاسخ (مچ‌شده)</span><strong class="kpi-value"><%= it.responseRate === null ? '—' : h.faPercent(it.responseRate) %></strong><span class="kpi-sub"><%= h.faNumber(st.matched) %> پاسخ مچ‌شده</span></div>
+<div class="kpi<%= st.todo > 0 ? ' kpi-alert' : '' %>"><span class="kpi-label">منتقدان پیگیری‌نشده</span><strong class="kpi-value"><%= h.faNumber(st.todo) %></strong></div>
+<div class="kpi"><span class="kpi-label">تلاش تکراری</span><strong class="kpi-value"><%= h.faNumber(st.duplicates) %></strong></div>
+</section>
+
+<% if (st.test > 0) { %>
+<section class="card card-warn">
+<h2>ثبت‌های آزمایشی</h2>
+<p><%= h.faNumber(st.test) %> ثبت آزمایشی در دیتابیس است. این‌ها در آمار و خروجی‌ها حساب نمی‌شوند.</p>
+<form method="post" action="/admin/test-data/delete" data-confirm="همه‌ی ثبت‌های آزمایشی حذف شوند؟">
+<input type="hidden" name="_csrf" value="<%= it.csrf %>">
+<button type="submit" class="btn btn-danger">حذف همه‌ی ثبت‌های آزمایشی</button>
+</form>
+</section>
+<% } %>
+
+<section class="card">
+<h2>خروجی اکسل (CSV)</h2>
+<div class="actions">
+<a class="btn" href="/admin/export/responses.csv">همه‌ی پاسخ‌ها</a>
+<a class="btn" href="/admin/export/non-respondents.csv">پاسخ‌نداده‌ها (برای پیامک یادآوری)</a>
+<a class="btn" href="/admin/export/followups.csv">لیست پیگیری منتقدان</a>
+</div>
+<p class="muted small">فایل‌ها UTF-8 با BOM هستند تا فارسی در اکسل درست باز شود.</p>
+</section>
+
+<section class="card">
+<h2>ابزارها</h2>
+<div class="tools">
+<form method="post" action="/admin/responses/delete" class="stack" data-confirm="پاسخ این شماره حذف شود؟ این کار برگشت‌پذیر نیست.">
+<input type="hidden" name="_csrf" value="<%= it.csrf %>">
+<h3>حذف پاسخ یک شماره</h3>
+<p class="muted small">برای مشتری‌ای که امتیاز اشتباه زده یا کسی که با شماره‌ی او ثبت کرده. بعد از حذف می‌تواند دوباره نظر بدهد.</p>
+<label>شماره موبایل <input type="tel" name="mobile" dir="ltr" inputmode="numeric" required></label>
+<label class="check"><input type="checkbox" name="confirm" value="yes"> مطمئنم</label>
+<button type="submit" class="btn btn-danger">حذف پاسخ</button>
+</form>
+<div class="stack">
+<h3>مچ مجدد</h3>
+<p class="muted small">پاسخ‌ها را دوباره با لیست مشتریان تطبیق می‌دهد (بعد از هر ورود لیست خودکار انجام می‌شود).</p>
+<form method="post" action="/admin/rematch"><input type="hidden" name="_csrf" value="<%= it.csrf %>"><button type="submit" class="btn btn-ghost">مچ مجدد</button></form>
+<h3>بکاپ</h3>
+<p class="muted small">یک نسخه‌ی سالم از کل دیتابیس دانلود می‌شود.</p>
+<a class="btn btn-ghost" href="/admin/backup">دانلود بکاپ</a>
+<h3>هشدار فوری بله</h3>
+<p class="muted small"><%= it.webhook ? 'فعال است: با هر امتیاز ۶ و کمتر پیام می‌رود.' : 'غیرفعال است (DETRACTOR_WEBHOOK_URL تنظیم نشده).' %></p>
+</div>
+</div>
+</section>

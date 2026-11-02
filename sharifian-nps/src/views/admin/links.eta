@@ -1,0 +1,18 @@
+<% layout('./layout', { title: 'لینک کانال‌ها' }) %>
+<h1>لینک کانال‌ها</h1>
+<p class="muted">برای هر کانال و هر کارشناس یک لینک آماده؛ کانال و کارشناس همراه پاسخ ذخیره می‌شود تا در داشبورد معلوم باشد کدام کانال بهتر جواب داده.</p>
+<% it.groups.forEach((g, i) => { %>
+<details class="card links"<%~ i === 0 ? ' open' : '' %>>
+<summary><%= g.title %></summary>
+<ul class="link-list">
+<% for (const l of g.links) { %><li><span class="link-label"><%= l.label %></span><input class="link-url" type="text" readonly dir="ltr" value="<%= l.url %>" aria-label="لینک <%= l.label %> — <%= g.title %>"><button type="button" class="btn btn-ghost btn-sm" data-copy="<%= l.url %>">کپی</button></li>
+<% } %></ul>
+</details>
+<% }) %>
+<details class="card links card-warn">
+<summary>لینک‌های آزمایشی (۲۴ ساعت اعتبار)</summary>
+<p class="muted small">برای چک‌لیست روز قبل: هر لینک را از همان کانال برای خودتان بفرستید و یک ثبت آزمایشی بزنید. این ثبت‌ها قبل از شروع کمپین هم کار می‌کنند، در آمار حساب نمی‌شوند و از صفحه‌ی خانه با یک دکمه پاک می‌شوند.</p>
+<ul class="link-list">
+<% for (const l of it.testLinks) { %><li><span class="link-label"><%= l.label %></span><input class="link-url" type="text" readonly dir="ltr" value="<%= l.url %>" aria-label="لینک آزمایشی <%= l.label %>"><button type="button" class="btn btn-ghost btn-sm" data-copy="<%= l.url %>">کپی</button></li>
+<% } %></ul>
+</details>

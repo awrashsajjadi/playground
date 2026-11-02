@@ -1,0 +1,215 @@
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/assets/fonts/Vazirmatn-NL-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  src: url('/assets/fonts/Vazirmatn-NL-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #fffbf5;
+  --surface: #ffffff;
+  --text: #1c1917;
+  --muted: #57534e;
+  --line: #e7e0d6;
+  --control: #8c847e;
+  --accent: #c2410c;
+  --accent-dark: #9a3412;
+  --accent-soft: #fff1e6;
+  --danger: #b91c1c;
+  --radius: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 16px/1.75 Vazirmatn, Tahoma, system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+button, input, textarea { font: inherit; color: inherit; }
+
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Honeypot: clipped in place. Never use left:-10000px — in RTL that creates horizontal overflow. */
+.hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); opacity: 0; pointer-events: none; }
+
+.test-banner {
+  margin: 0;
+  padding: 10px 16px;
+  background: #fef3c7;
+  color: #713f12;
+  border-bottom: 1px solid #fcd34d;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Brand */
+.brand { display: flex; justify-content: center; padding: 22px 16px 2px; }
+.brand-mark {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); font-weight: 700; font-size: 19px; letter-spacing: 0;
+}
+.brand img { height: 32px; width: auto; }
+
+.page { max-width: 560px; margin: 0 auto; padding: 8px 16px 40px; }
+
+/* Progress (JS only) */
+.progress { display: none; position: fixed; top: 0; right: 0; left: 0; height: 4px; background: #f1e6d8; z-index: 10; }
+.js .progress { display: block; }
+.progress-bar { display: block; height: 100%; width: 33.34%; background: var(--accent); transition: width .3s ease; }
+
+/* Steps: with JS one at a time, without JS all three stacked */
+.js .step { display: none; }
+.js .step.is-active { display: block; animation: rise .25s ease-out; }
+html:not(.js) .step + .step { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.js .nojs-only { display: none; }
+.js-only { display: none !important; }
+.js .js-only { display: inline-flex !important; }
+.js .nav.js-only { display: flex !important; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+
+.intro { margin: 10px 0 18px; color: var(--muted); font-size: 14px; text-align: center; }
+
+.question {
+  display: block;
+  margin: 0 0 18px;
+  padding: 0;
+  font-size: 20px;
+  line-height: 1.65;
+  font-weight: 700;
+  outline: none;
+}
+
+/* 0–10 scale: 2 rows on phones (0–5 / 6–10), one row from 600px. Same look for every number (no category colors). */
+.scale { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.scale label {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 52px;
+  border: 1.5px solid var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 19px; font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .15s, color .15s, border-color .15s, transform .1s;
+}
+.scale label:active { transform: scale(.95); }
+.scale input:checked + label { background: var(--accent); border-color: var(--accent); color: #fff; }
+.scale input:focus-visible + label { outline: 3px solid var(--accent-dark); outline-offset: 2px; }
+@media (hover: hover) { .scale label:hover { border-color: var(--accent); } }
+@media (min-width: 600px) {
+  .scale { grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 6px; }
+  .scale label { min-height: 48px; font-size: 18px; }
+}
+.scale-legend { display: flex; justify-content: space-between; margin-top: 10px; color: var(--muted); font-size: 13px; }
+
+.hint { margin: -8px 0 14px; color: var(--muted); font-size: 14px; }
+
+/* Driver chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.chips label {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 44px;
+  padding: 7px 15px;
+  border: 1.5px solid var(--control);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 15px;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.chips input:checked + label { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-dark); font-weight: 700; }
+.chips input:checked + label::before { content: '✓'; font-weight: 700; }
+.chips input:focus-visible + label { outline: 3px solid var(--accent-dark); outline-offset: 2px; }
+@media (hover: hover) { .chips label:hover { border-color: var(--accent); } }
+
+textarea, input[type='tel'] {
+  display: block;
+  width: 100%;
+  border: 1.5px solid var(--control);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 12px 14px;
+  font-size: 16px;
+}
+textarea { min-height: 104px; resize: vertical; line-height: 1.8; }
+input[type='tel'] { min-height: 58px; font-size: 21px; letter-spacing: .06em; direction: ltr; text-align: left; }
+textarea:focus, input[type='tel']:focus {
+  outline: 2px solid transparent; /* still visible in Windows high-contrast mode */
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px #f3c4a6;
+}
+::placeholder { color: #736c66; opacity: 1; }
+[aria-invalid='true'] { border-color: var(--danger) !important; }
+
+.counter { margin: 6px 0 0; color: var(--muted); font-size: 13px; text-align: left; direction: ltr; }
+
+.consent { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 6px; font-size: 15px; line-height: 1.7; cursor: pointer; }
+.consent input { flex: none; width: 22px; height: 22px; margin: 3px 0 0; accent-color: var(--accent); }
+.consent[hidden] { display: none; }
+
+.privacy { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+
+.field-error { margin: 8px 0 0; color: var(--danger); font-size: 14px; }
+.form-error { margin: 16px 0 0; padding: 10px 12px; border: 1px solid #fecaca; border-radius: 10px; background: #fef2f2; color: var(--danger); font-size: 14px; }
+[hidden] { display: none !important; }
+
+/* Buttons */
+.nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 26px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 50px;
+  padding: 10px 24px;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px; font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav .btn:not(.btn-ghost) { flex: 1; }
+.btn:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 2px; }
+.btn[disabled] { opacity: .75; cursor: progress; }
+.btn-ghost { background: transparent; color: var(--accent-dark); border-color: var(--control); }
+@media (hover: hover) {
+  .btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .btn-ghost:hover { background: var(--accent-soft); color: var(--accent-dark); border-color: var(--accent); }
+}
+
+/* Message pages (thanks, duplicate, closed…) */
+.message { padding: 44px 4px 24px; text-align: center; }
+.message-emoji { font-size: 46px; line-height: 1.2; }
+.message-title { margin: 14px 0 10px; font-size: 24px; line-height: 1.6; }
+.message-text { max-width: 36em; margin: 0 auto 30px; color: var(--muted); font-size: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

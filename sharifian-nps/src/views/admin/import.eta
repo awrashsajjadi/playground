@@ -1,0 +1,20 @@
+<% layout('./layout', { title: 'لیست مشتریان' }) %>
+<h1>ورود لیست مشتریان</h1>
+<section class="card">
+<p>فایل CSV با این ستون‌ها (فقط <code>mobile</code> اجباری است؛ سرستون فارسی هم قبول است):</p>
+<p dir="ltr" class="code-line"><code>mobile,name,company,city,province,customer_type,value_tier,sales_rep,first_purchase_date</code></p>
+<ul class="muted small">
+<li>کدگذاری UTF-8 (با یا بدون BOM)، یا «CSV معمولی» اکسل فارسی (Windows-1256) — خودکار تشخیص داده می‌شود.</li>
+<li>جداکننده ویرگول یا نقطه‌ویرگول (خودکار تشخیص داده می‌شود).</li>
+<li>بر اساس موبایل upsert می‌شود؛ سلول خالی مقدار قبلی را پاک نمی‌کند.</li>
+<li>ستون سطح (<bdi><code>value_tier</code></bdi>): یکی از A، B یا C.</li>
+<li>ستون کارشناس (<bdi><code>sales_rep</code></bdi>): ترجیحاً کد کوتاه لاتین مثل <bdi>r01</bdi>؛ همین کد در لینک‌ها هم می‌آید.</li>
+</ul>
+<p><a href="/admin/import/sample.csv">دانلود فایل نمونه</a></p>
+<noscript><p class="banner banner-danger">این صفحه به جاوااسکریپت نیاز دارد.</p></noscript>
+<div class="upload">
+<label class="file-label">انتخاب فایل CSV <input type="file" id="csv-file" accept=".csv,.txt,text/csv"></label>
+<button type="button" class="btn" id="csv-preview" disabled>پیش‌نمایش</button>
+</div>
+</section>
+<section id="import-result" class="card" hidden aria-live="polite"></section>

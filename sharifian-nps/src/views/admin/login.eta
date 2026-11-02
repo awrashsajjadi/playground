@@ -1,0 +1,15 @@
+<% layout('./layout', { title: 'ورود' }) %>
+<div class="login">
+<h1>ورود به پنل نظرسنجی</h1>
+<% if (it.error) { %><p class="banner banner-danger" role="alert"><%= it.error %></p>
+<% } %><form method="post" action="/admin/login" class="stack">
+<input type="hidden" name="next" value="<%= it.next %>">
+<label><span>رمز ورود</span>
+<input type="password" name="password" autocomplete="current-password" required autofocus>
+</label>
+<label><span>نام شما <span class="muted small">(اختیاری؛ کنار پیگیری‌ها ثبت می‌شود)</span></span>
+<input type="text" name="name" maxlength="40" autocomplete="name">
+</label>
+<button type="submit" class="btn">ورود</button>
+</form>
+</div>
