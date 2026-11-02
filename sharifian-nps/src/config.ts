@@ -3,6 +3,7 @@ import { randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tehranDayKey } from './core/date.ts';
 import type { ThemeDef } from './core/themes.ts';
 
 export const ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -231,9 +232,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env, nowMs = Date.no
       if (!env.SURVEY_OPENS_AT) errors.push('SURVEY_OPENS_AT تنظیم نشده است.');
       if (!env.SURVEY_CLOSES_AT) errors.push('SURVEY_CLOSES_AT تنظیم نشده است.');
     } else {
-      opensAt ??= new Date(nowMs - 24 * 3600_000);
-      closesAt ??= new Date(nowMs + 7 * 24 * 3600_000);
-      warnings.push('بازه‌ی نظرسنجی تنظیم نشده؛ در حالت توسعه از دیروز تا ۷ روز بعد باز است.');
+      // A campaign that is already running (D87): opened 5 days ago at 08:00 Tehran and closes in 2 days, so the
+      // form is open and seed:demo data lands in the past, as it would mid-campaign.
+      const day = 24 * 3600_000;
+      opensAt ??= new Date(`${tehranDayKey(new Date(nowMs - 5 * day))}T08:00:00+03:30`);
+      closesAt ??= new Date(`${tehranDayKey(new Date(nowMs + 2 * day))}T23:59:59+03:30`);
+      warnings.push('بازه‌ی نظرسنجی تنظیم نشده؛ در حالت توسعه از ۵ روز پیش تا ۲ روز بعد باز است.');
     }
   }
   if (opensAt && closesAt && opensAt >= closesAt) errors.push('SURVEY_OPENS_AT باید قبل از SURVEY_CLOSES_AT باشد.');

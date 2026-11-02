@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { tehranDayKey } from '../../src/core/date.ts';
 import { faNumber, faSigned } from '../../src/core/fa.ts';
 import { clearDemo, DEMO_CUSTOMERS, DEMO_RESPONSES, hasRealData, seedDemo } from '../../src/services/demo.ts';
 import { count, createTestApp, getToken, login, submitJson, type TestApp } from '../helpers.ts';
@@ -28,7 +29,7 @@ function npsFromDb(where = "kind <> 'test'") {
 
 describe('demo data', () => {
   it('seeds 500 customers and 180 responses, all marked as demo; clear removes only demo rows', async () => {
-    const result = seedDemo(t.db, t.config);
+    const result = seedDemo(t.db, t.config, { now: t.now() });
     expect(result).toMatchObject({ customers: DEMO_CUSTOMERS, responses: DEMO_RESPONSES });
     expect(count(t.db, 'SELECT COUNT(*) n FROM customers WHERE is_demo = 1')).toBe(500);
     expect(count(t.db, "SELECT COUNT(*) n FROM responses WHERE kind = 'demo'")).toBe(180);
@@ -53,14 +54,31 @@ describe('demo data', () => {
   });
 
   it('is reproducible (fixed seed)', () => {
-    seedDemo(t.db, t.config);
+    seedDemo(t.db, t.config, { now: t.now() });
     const first = npsFromDb();
-    seedDemo(t.db, t.config);
+    seedDemo(t.db, t.config, { now: t.now() });
     expect(npsFromDb()).toEqual(first);
   });
 
+  it('never dates anything in the future: mid-campaign the data stops at "now", with the same answers', () => {
+    const now = Date.parse('2026-11-12T15:00:00+03:30'); // day 5 of 7
+    seedDemo(t.db, t.config, { now });
+    const latest = (sql: string) => Date.parse((t.db.prepare(sql).get() as { m: string }).m);
+    expect(latest('SELECT MAX(created_at) m FROM responses')).toBeLessThanOrEqual(now);
+    expect(latest('SELECT MAX(followup_at) m FROM responses')).toBeLessThanOrEqual(now);
+    expect(latest('SELECT MAX(created_at) m FROM events')).toBeLessThanOrEqual(now);
+    expect(latest('SELECT MIN(created_at) m FROM responses')).toBeGreaterThanOrEqual(t.config.opensAt.getTime());
+    const days = (t.db.prepare('SELECT DISTINCT created_at c FROM responses').all() as { c: string }[]).map((r) => tehranDayKey(r.c));
+    expect([...new Set(days)].sort()).toEqual(['2026-11-08', '2026-11-09', '2026-11-10', '2026-11-11', '2026-11-12']);
+    // Only the timestamps move: the answers are the same as a seed taken after the campaign.
+    const midCampaign = npsFromDb();
+    seedDemo(t.db, t.config, { now: t.config.closesAt.getTime() + 1 });
+    expect(npsFromDb()).toEqual(midCampaign);
+    expect(latest('SELECT MAX(created_at) m FROM responses')).toBeGreaterThan(now);
+  });
+
   it('admin pages show the demo warning and exports get a DEMO- prefix', async () => {
-    seedDemo(t.db, t.config);
+    seedDemo(t.db, t.config, { now: t.now() });
     expect((await get('/admin')).body).toContain('داده‌ی نمایشی (دمو) در دیتابیس است');
     expect((await get('/admin/export/responses.csv')).headers['content-disposition']).toContain('DEMO-sharifian-nps-responses');
   });
@@ -73,7 +91,7 @@ describe('GET /admin/dashboard', () => {
   });
 
   it('renders every section, and the NPS ± margin matches a direct calculation', async () => {
-    seedDemo(t.db, t.config);
+    seedDemo(t.db, t.config, { now: t.now() });
     const res = await get('/admin/dashboard');
     expect(res.statusCode).toBe(200);
     const expected = npsFromDb();
@@ -92,10 +110,13 @@ describe('GET /admin/dashboard', () => {
     const data = JSON.parse(/<script type="application\/json" id="dash-data">(.*?)<\/script>/s.exec(res.body)![1]!);
     expect(data.histogram.counts.reduce((a: number, b: number) => a + b, 0)).toBe(180);
     expect(data.trend.labels).toHaveLength(7);
+    // "Now" is day 2 (D87): the cumulative line has values up to today and none for the 5 days still to come.
+    expect(data.trend.nps.slice(0, 2).every((v: number | null) => typeof v === 'number')).toBe(true);
+    expect(data.trend.nps.slice(2)).toEqual([null, null, null, null, null]);
   });
 
   it('applies filters (and the KPI follows them); unknown filter values are ignored', async () => {
-    seedDemo(t.db, t.config);
+    seedDemo(t.db, t.config, { now: t.now() });
     const res = await get(`/admin/dashboard?city=${encodeURIComponent('تهران')}&matched=1`);
     const expected = npsFromDb("kind <> 'test' AND customer_id IN (SELECT id FROM customers WHERE city = 'تهران')");
     expect(res.body).toContain(`<strong class="hero" dir="ltr">${faSigned(expected.nps)}</strong>`);
@@ -169,7 +190,7 @@ describe('follow-up and featured actions', () => {
 
 describe('GET /admin/report', () => {
   it('prints KPIs, strengths, pains and at most 10 anonymous quotes', async () => {
-    seedDemo(t.db, t.config);
+    seedDemo(t.db, t.config, { now: t.now() });
     const res = await get('/admin/report');
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain('data-mode="report"');

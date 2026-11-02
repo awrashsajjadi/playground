@@ -1,7 +1,24 @@
 // Entry point: config → database → app → listen. Run with `npm start` (Node ≥ 22.18 runs .ts directly).
+import { networkInterfaces } from 'node:os';
 import { buildApp, productionLogger } from './app.ts';
-import { ConfigError, loadConfig } from './config.ts';
+import { ConfigError, loadConfig, type AppConfig } from './config.ts';
 import { openDb } from './db/db.ts';
+
+/** Development only: where to open the app, including this computer's LAN address for testing on a phone. */
+function devBanner(config: AppConfig): string {
+  const everyInterface = config.host === '0.0.0.0' || config.host === '::';
+  const lan = everyInterface
+    ? Object.values(networkInterfaces()).flatMap((list) => list ?? []).filter((a) => a.family === 'IPv4' && !a.internal)
+    : [];
+  const url = (host: string, path = '') => `http://${host}:${config.port}${path}`.padEnd(34);
+  return [
+    '',
+    `  ${url('localhost')} فرم نظرسنجی`,
+    `  ${url('localhost', '/admin/dashboard')} داشبورد${process.env.ADMIN_PASSWORD ? '' : ' (رمز: admin)'}`,
+    ...lan.map((a) => `  ${url(a.address)} روی گوشی (همان وای‌فای)`),
+    '',
+  ].join('\n');
+}
 
 async function main(): Promise<void> {
   let config;
@@ -39,6 +56,7 @@ async function main(): Promise<void> {
   process.on('SIGINT', () => void shutdown('SIGINT'));
 
   await app.listen({ port: config.port, host: config.host });
+  if (config.env === 'development') console.log(devBanner(config));
 }
 
 await main();

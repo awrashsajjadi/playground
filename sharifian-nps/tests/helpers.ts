@@ -29,6 +29,8 @@ export interface TestApp {
   db: DB;
   config: AppConfig;
   alerts: DetractorAlert[];
+  /** The fake clock (ms). */
+  now(): number;
   /** Moves the fake clock forward. */
   advance(ms: number): void;
   setNow(iso: string): void;
@@ -46,6 +48,7 @@ export async function createTestApp(options: { now?: string; env?: Record<string
     db,
     config,
     alerts,
+    now: () => now,
     advance(ms) {
       now += ms;
     },

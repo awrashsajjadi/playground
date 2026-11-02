@@ -71,7 +71,7 @@ async function dashboardShots(browser: Browser): Promise<void> {
     SURVEY_OPENS_AT: '2026-11-08T08:00:00+03:30',
     SURVEY_CLOSES_AT: '2026-11-14T23:59:59+03:30',
   });
-  seedDemo(server.db, server.config);
+  seedDemo(server.db, server.config, { now: server.config.closesAt.getTime() }); // whole window, reproducible
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'fa-IR' });
   const page = await context.newPage();
   await page.goto(`${server.url}/admin/login`);

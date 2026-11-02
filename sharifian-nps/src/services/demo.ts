@@ -108,7 +108,11 @@ export function clearDemo(db: DB): { responses: number; customers: number; event
   }))();
 }
 
-export function seedDemo(db: DB, config: AppConfig, seed = 1405): { customers: number; responses: number; events: number } {
+export function seedDemo(
+  db: DB,
+  config: AppConfig,
+  { seed = 1405, now = Date.now() }: { seed?: number; now?: number } = {},
+): { customers: number; responses: number; events: number } {
   const rand = mulberry32(seed);
   const pick = <T>(list: readonly T[]): T => list[Math.floor(rand() * list.length)] as T;
   const weighted = <T>(pairs: readonly (readonly [...unknown[], number])[]): T => {
@@ -121,21 +125,26 @@ export function seedDemo(db: DB, config: AppConfig, seed = 1405): { customers: n
     return pairs[pairs.length - 1] as unknown as T;
   };
   const themes = compileThemes(config.themes);
-  const nowIso = new Date().toISOString();
+  const nowIso = new Date(now).toISOString();
 
+  const DAY = 86_400_000;
+  const opens = config.opensAt.getTime();
+  // Nothing is dated in the future (D87): while the campaign runs, demo data stops at "now"; before it starts
+  // (or after it ends) it covers the whole configured window.
+  const end = now > opens && now < config.closesAt.getTime() ? now : config.closesAt.getTime();
   // Campaign days in Tehran (first day busiest after the SMS blast, a bump on day 4 after the reminder).
   const days: string[] = [];
-  for (let t = config.opensAt.getTime(); t <= config.closesAt.getTime(); t += 86_400_000) days.push(tehranDayKey(new Date(t)));
+  for (let t = opens; t <= end; t += DAY) days.push(tehranDayKey(new Date(t)));
   const dayWeights = days.map((_, i) => [i, [35, 20, 12, 15, 8, 5, 5][i] ?? 4] as const);
   const instant = (): string => {
     const [dayIndex] = weighted<readonly [number, number]>(dayWeights);
     const day = days[dayIndex] ?? days[0]!;
     const hour = weighted<readonly [number, number]>([[9, 6], [10, 10], [11, 12], [12, 10], [13, 6], [14, 5], [15, 5], [16, 6], [17, 9], [18, 10], [19, 9], [20, 7], [21, 5]])[0];
     const minute = Math.floor(rand() * 60);
-    const date = new Date(`${day}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00+03:30`);
-    // Never in the future relative to the campaign close, never before opening.
-    const t = Math.min(Math.max(date.getTime(), config.opensAt.getTime()), config.closesAt.getTime());
-    return new Date(t).toISOString();
+    let t = new Date(`${day}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00+03:30`).getTime();
+    // A time later than `end` on the last day moves to the same hour a day earlier (keeps the hour-of-day shape).
+    while (t > end && t - DAY >= opens) t -= DAY;
+    return new Date(Math.min(Math.max(t, opens), end)).toISOString();
   };
 
   return db.transaction(() => {
@@ -210,7 +219,14 @@ export function seedDemo(db: DB, config: AppConfig, seed = 1405): { customers: n
         if (status !== 'todo') {
           note = pick(NOTES[status] ?? ['']);
           by = pick(STAFF);
-          at = new Date(Math.min(Date.parse(createdAt) + (6 + rand() * 40) * 3600_000, config.closesAt.getTime())).toISOString();
+          const followedUp = Date.parse(createdAt) + (6 + rand() * 40) * 3600_000;
+          if (followedUp <= end) at = new Date(followedUp).toISOString();
+          else {
+            // Too recent to have been called yet.
+            status = 'todo';
+            note = null;
+            by = null;
+          }
         }
       }
       const duration = Math.round(Math.exp(Math.log(42_000) + (rand() - 0.5) * 1.1));

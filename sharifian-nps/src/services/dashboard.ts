@@ -124,7 +124,9 @@ export function loadDashboard(ctx: AppContext, query: Record<string, unknown>) {
   const followups = followupList(rows, now.getTime());
   const durations = rows.map((r) => r.durationMs).filter((v): v is number => v !== null && v > 0);
   const shownDays = days.filter((d) => (!filters.from || d >= filters.from) && (!filters.to || d <= filters.to));
-  const trend = daily(rows, shownDays);
+  // The cumulative line stops today: carrying it into campaign days that have not happened yet would invent data.
+  const today = toDayKey(now.toISOString());
+  const trend = daily(rows, shownDays).map((p) => (p.day > today ? { ...p, cumulativeNps: null } : p));
   const drivers = driverMatrix(rows, survey.drivers);
   const themes = themeBreakdown(rows, config.themes);
   const driverLabels = new Map(survey.drivers.map((d) => [d.id, d.label]));
