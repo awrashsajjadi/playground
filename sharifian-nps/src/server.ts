@@ -1,7 +1,7 @@
 // Entry point: config → database → app → listen. Run with `npm start` (Node ≥ 22.18 runs .ts directly).
 import { networkInterfaces } from 'node:os';
 import { buildApp, productionLogger } from './app.ts';
-import { ConfigError, loadConfig, type AppConfig } from './config.ts';
+import { ConfigError, loadConfig, loadDotEnv, type AppConfig } from './config.ts';
 import { openDb } from './db/db.ts';
 
 /** Development only: where to open the app, including this computer's LAN address for testing on a phone. */
@@ -23,6 +23,7 @@ function devBanner(config: AppConfig): string {
 async function main(): Promise<void> {
   let config;
   try {
+    loadDotEnv();
     config = loadConfig();
   } catch (err) {
     if (err instanceof ConfigError) {

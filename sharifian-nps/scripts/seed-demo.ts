@@ -1,10 +1,11 @@
 // npm run seed:demo — fills the configured database with clearly-marked demo data.
 // Refuses to run on a database that already holds real customers or responses (use --force to override).
-import { ConfigError, loadConfig } from '../src/config.ts';
+import { ConfigError, loadConfig, loadDotEnv } from '../src/config.ts';
 import { openDb } from '../src/db/db.ts';
 import { hasRealData, seedDemo } from '../src/services/demo.ts';
 
 try {
+  loadDotEnv();
   const config = loadConfig();
   const db = openDb(config.databasePath);
   if (hasRealData(db) && !process.argv.includes('--force')) {

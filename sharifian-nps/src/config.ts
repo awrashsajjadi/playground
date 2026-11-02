@@ -1,6 +1,6 @@
 // Environment + JSON config loading with clear, all-at-once validation errors.
 import { randomBytes } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tehranDayKey } from './core/date.ts';
@@ -191,6 +191,16 @@ function parseTrustProxy(value: string | undefined): boolean | number | string {
   if (v === 'false') return false;
   if (/^\d+$/.test(v)) return Number(v);
   return value!.trim();
+}
+
+/**
+ * Loads `.env` from the project root when there is one (D89). Variables already set in the environment win,
+ * so on Liara / Docker the platform's values are never overridden by a stray file.
+ */
+export function loadDotEnv(file = resolve(ROOT_DIR, '.env')): boolean {
+  if (!existsSync(file)) return false;
+  process.loadEnvFile(file);
+  return true;
 }
 
 /** Reads process.env (or a given env) and the JSON files. Throws ConfigError listing every problem. */
