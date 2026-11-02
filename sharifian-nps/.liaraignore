@@ -1,0 +1,10 @@
+# Not uploaded by `liara deploy`: the image is built from source on Liara.
+node_modules
+data
+public/build
+docs
+test-results
+playwright-report
+.env
+*.db
+*.db-*

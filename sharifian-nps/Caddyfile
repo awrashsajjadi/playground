@@ -1,0 +1,4 @@
+# HTTPS is automatic (Let's Encrypt / ZeroSSL) once the domain's DNS points at this server.
+{$DOMAIN:nazar.sharifianshop.com} {
+	reverse_proxy app:3000
+}

@@ -132,6 +132,7 @@ describe('admin home', () => {
     expect(res.body).toMatch(/پاسخ‌ها<\/span><strong class="kpi-value">۲</);
     expect(res.body).toContain('<strong class="kpi-value" dir="ltr">۰</strong>');
     expect(res.body).toMatch(/kpi-alert"><span class="kpi-label">منتقدان پیگیری‌نشده<\/span><strong class="kpi-value">۱</);
+    expect(res.body).toContain('id="auto-backup"'); // status of the automatic daily backup (D33)
   });
 });
 
@@ -311,5 +312,6 @@ describe('links, maintenance and backup', () => {
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-disposition']).toMatch(/sharifian-nps-backup-1405-08-18\.db/);
     expect(res.rawPayload.subarray(0, 15).toString()).toBe('SQLite format 3');
+    expect(res.rawPayload[18]).toBe(1); // header: rollback journal, not WAL — one self-contained file
   });
 });

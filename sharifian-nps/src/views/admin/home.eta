@@ -19,6 +19,17 @@
 <div class="kpi"><span class="kpi-label">تلاش تکراری</span><strong class="kpi-value"><%= h.faNumber(st.duplicates) %></strong></div>
 </section>
 
+<% if (it.demo) { %>
+<section class="card card-warn" id="demo-data">
+<h2>داده‌ی دمو</h2>
+<p><%= h.faNumber(st.demo_customers) %> مشتری و <%= h.faNumber(st.demo) %> پاسخ ساختگی برای دیدن داشبورد در دیتابیس است. قبل از شروع کمپین پاکشان کنید؛ داده‌ی واقعی دست نمی‌خورد.</p>
+<form method="post" action="/admin/demo-data/delete" data-confirm="همه‌ی داده‌ی دمو پاک شود؟ داده‌ی واقعی دست نمی‌خورد.">
+<input type="hidden" name="_csrf" value="<%= it.csrf %>">
+<button type="submit" class="btn btn-danger">پاک کردن داده‌ی دمو</button>
+</form>
+</section>
+<% } %>
+
 <% if (st.test > 0) { %>
 <section class="card card-warn">
 <h2>ثبت‌های آزمایشی</h2>
@@ -58,6 +69,7 @@
 <h3>بکاپ</h3>
 <p class="muted small">یک نسخه‌ی سالم از کل دیتابیس دانلود می‌شود.</p>
 <a class="btn btn-ghost" href="/admin/backup">دانلود بکاپ</a>
+<p class="muted small" id="auto-backup"><% if (it.backups.last) { %>بکاپ خودکار روزانه: آخرین نسخه <%= it.backups.last %> · <%= it.h.fa(it.backups.count) %> فایل در <code dir="ltr"><%= it.backups.dir %></code><% } else { %>بکاپ خودکار روزانه هنوز ساخته نشده؛ چند ثانیه بعد از شروع سرور ساخته می‌شود و هفت نسخه‌ی آخر می‌ماند.<% } %></p>
 <h3>هشدار فوری بله</h3>
 <p class="muted small"><%= it.webhook ? 'فعال است: با هر امتیاز ۶ و کمتر پیام می‌رود.' : 'غیرفعال است (DETRACTOR_WEBHOOK_URL تنظیم نشده).' %></p>
 </div>

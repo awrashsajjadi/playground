@@ -1,0 +1,11 @@
+{
+  "app": "sharifian-nps",
+  "platform": "docker",
+  "port": 3000,
+  "disks": [
+    {
+      "name": "data",
+      "mountTo": "/data"
+    }
+  ]
+}

@@ -23,7 +23,7 @@
 </nav>
 <form class="topbar-logout" method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= it.csrf %>"><% if (it.admin.name) { %><span class="who"><%= it.admin.name %></span><% } %><button type="submit" class="link-btn">خروج</button></form>
 </header>
-<% if (it.demo) { %><p class="banner banner-danger" role="alert">⚠️ داده‌ی نمایشی (دمو) در دیتابیس است. قبل از شروع کمپین <code>npm run seed:clear</code> را اجرا کنید؛ خروجی‌ها با پیشوند DEMO- نام‌گذاری می‌شوند.</p>
+<% if (it.demo) { %><p class="banner banner-danger" role="alert">⚠️ داده‌ی نمایشی (دمو) در دیتابیس است. قبل از شروع کمپین از <a href="/admin#demo-data">خانه‌ی پنل</a> پاکش کنید (یا <code>npm run seed:clear</code>)؛ خروجی‌ها با پیشوند DEMO- نام‌گذاری می‌شوند.</p>
 <% } %><% } %><main class="wrap<%= it.wide ? ' wrap-wide' : '' %>">
 <%~ it.body %>
 </main>

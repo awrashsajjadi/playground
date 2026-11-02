@@ -14,7 +14,7 @@ export interface DriverDef {
 }
 
 export interface SurveyConfig {
-  brand: { name: string; shopUrl: string; accent: string };
+  brand: { name: string; shopUrl: string };
   meta: { title: string; description: string };
   intro: string;
   step1: { question: string; lowLabel: string; highLabel: string };
@@ -79,7 +79,7 @@ export class ConfigError extends Error {
 }
 
 const REQUIRED_TEXTS = [
-  'brand.name', 'brand.shopUrl', 'brand.accent', 'meta.title', 'meta.description', 'intro',
+  'brand.name', 'brand.shopUrl', 'meta.title', 'meta.description', 'intro',
   'step1.question', 'step1.lowLabel', 'step1.highLabel',
   'step2.titles.promoter', 'step2.titles.passive', 'step2.titles.detractor', 'step2.titles.fallback',
   'step2.hint', 'step2.commentLabel', 'step2.commentPlaceholder',

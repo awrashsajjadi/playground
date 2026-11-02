@@ -15,7 +15,9 @@ import type { AppContext } from '../context.ts';
 import {
   cleanAdminName, createSessionValue, csrfToken, requireAdmin, sessionCookie,
 } from '../plugins/auth.ts';
+import { listBackups, makeSingleFile } from '../services/backup.ts';
 import { commitImport, previewImport, SAMPLE_CSV } from '../services/customers.ts';
+import { clearDemo } from '../services/demo.ts';
 import { issueTestLinkToken } from '../services/tokens.ts';
 
 const FLASH: Record<string, (n: string) => string> = {
@@ -24,6 +26,7 @@ const FLASH: Record<string, (n: string) => string> = {
   bad_mobile: () => 'شماره موبایل معتبر نیست.',
   confirm: () => 'برای حذف، تیک «مطمئنم» را بزنید.',
   test_deleted: (n) => `${faDigits(n)} ثبت آزمایشی حذف شد.`,
+  demo_deleted: (n) => `داده‌ی دمو پاک شد (${faDigits(n)} پاسخ نمایشی). داده‌ی واقعی دست نخورد.`,
   rematched: (n) => `مچ مجدد انجام شد؛ ${faDigits(n)} پاسخ به مشتری وصل است.`,
 };
 
@@ -114,6 +117,10 @@ export function adminRoutes(app: FastifyInstance, ctx: AppContext): void {
       flash,
       flashError: q.msg === 'not_found' || q.msg === 'bad_mobile' || q.msg === 'confirm',
       webhook: Boolean(config.webhookUrl),
+      backups: (() => {
+        const list = listBackups(config.backupDir);
+        return { count: list.length, last: list[0] ? faFullDateTime(list[0].at) : null, dir: config.backupDir };
+      })(),
     });
   });
 
@@ -175,10 +182,18 @@ export function adminRoutes(app: FastifyInstance, ctx: AppContext): void {
     return reply.redirect(`/admin?msg=test_deleted&n=${deleted}`, 303);
   });
 
+  // Same as `npm run seed:clear`, for hosts without a shell (Liara): removes only rows marked as demo.
+  app.post('/admin/demo-data/delete', { preHandler: guard }, async (req, reply) => {
+    const removed = clearDemo(ctx.db);
+    req.log.info({ ...removed, by: req.admin?.name }, 'demo data cleared');
+    return reply.redirect(`/admin?msg=demo_deleted&n=${removed.responses}`, 303);
+  });
+
   // Consistent snapshot via SQLite's online backup API (safe while the app is writing).
   app.get('/admin/backup', { preHandler: guard }, async (_req, reply) => {
     const file = join(tmpdir(), `nps-backup-${randomId(6)}.db`);
     await ctx.db.backup(file);
+    makeSingleFile(file);
     const stream = createReadStream(file);
     stream.on('close', () => void rm(file, { force: true }));
     return reply

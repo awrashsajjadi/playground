@@ -77,9 +77,31 @@ describe('demo data', () => {
     expect(latest('SELECT MAX(created_at) m FROM responses')).toBeGreaterThan(now);
   });
 
+  it('can be cleared from the panel (hosts without a shell); real data stays', async () => {
+    seedDemo(t.db, t.config, { now: t.now() });
+    const tk = await getToken(t.app);
+    t.advance(4000);
+    await submitJson(t.app, { tk, score: 7, mobile: '09120000001' });
+    const post = (csrf: string) =>
+      t.app.inject({
+        method: 'POST', url: '/admin/demo-data/delete',
+        headers: { cookie: auth.cookie, 'content-type': 'application/x-www-form-urlencoded' }, payload: `_csrf=${csrf}`,
+      });
+    expect((await post('wrong')).statusCode).toBe(403);
+    const res = await post(auth.csrf);
+    expect(res.headers.location).toBe('/admin?msg=demo_deleted&n=180');
+    expect(count(t.db, 'SELECT COUNT(*) n FROM customers')).toBe(0);
+    expect(t.db.prepare('SELECT kind, mobile FROM responses').all()).toEqual([{ kind: 'live', mobile: '09120000001' }]);
+    const home = await get('/admin?msg=demo_deleted&n=180');
+    expect(home.body).toContain('داده‌ی دمو پاک شد (۱۸۰ پاسخ نمایشی)');
+    expect(home.body).not.toContain('id="demo-data"');
+  });
+
   it('admin pages show the demo warning and exports get a DEMO- prefix', async () => {
     seedDemo(t.db, t.config, { now: t.now() });
-    expect((await get('/admin')).body).toContain('داده‌ی نمایشی (دمو) در دیتابیس است');
+    const home = (await get('/admin')).body;
+    expect(home).toContain('داده‌ی نمایشی (دمو) در دیتابیس است');
+    expect(home).toContain('action="/admin/demo-data/delete"');
     expect((await get('/admin/export/responses.csv')).headers['content-disposition']).toContain('DEMO-sharifian-nps-responses');
   });
 });

@@ -3,6 +3,7 @@ import { networkInterfaces } from 'node:os';
 import { buildApp, productionLogger } from './app.ts';
 import { ConfigError, loadConfig, loadDotEnv, type AppConfig } from './config.ts';
 import { openDb } from './db/db.ts';
+import { KEEP_DAILY, startDailyBackups } from './services/backup.ts';
 
 /** Development only: where to open the app, including this computer's LAN address for testing on a phone. */
 function devBanner(config: AppConfig): string {
@@ -61,6 +62,8 @@ async function main(): Promise<void> {
   process.on('SIGINT', () => void shutdown('SIGINT'));
 
   await app.listen({ port: config.port, host: config.host });
+  startDailyBackups(db, config.backupDir, () => new Date(), app.log);
+  app.log.info(`daily backups → ${config.backupDir} (newest ${KEEP_DAILY} kept)`);
   if (config.env === 'development') console.log(devBanner(config));
 }
 

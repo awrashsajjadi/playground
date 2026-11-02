@@ -1,0 +1,15 @@
+# Only source goes into the image: never secrets, local databases or test output.
+node_modules
+data
+public/build
+docs
+tests
+test-results
+playwright-report
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+.git
+.DS_Store
