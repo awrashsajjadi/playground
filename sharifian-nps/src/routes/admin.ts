@@ -41,14 +41,11 @@ export function surveyLink(base: string, src: string, rep: string | null, extra:
   return `${base}/${qs ? `?${qs}` : ''}`;
 }
 
-export function adminRoutes(app: FastifyInstance, ctx: AppContext): void {
-  const { config, repo } = ctx;
-  const secret = config.sessionSecret;
-  const secure = config.env === 'production';
-  const guard = requireAdmin(secret);
-
-  const page = (req: FastifyRequest, reply: FastifyReply, view: string, data: Record<string, unknown> = {}) => {
-    const stats = repo.stats();
+/** Renders an admin view with the shared layout data (session, CSRF token, nav, demo banner). */
+export function makeAdminPage(ctx: AppContext) {
+  const secret = ctx.config.sessionSecret;
+  return (req: FastifyRequest, reply: FastifyReply, view: string, data: Record<string, unknown> = {}) => {
+    const stats = ctx.repo.stats();
     return reply.header('cache-control', 'no-store').view(`admin/${view}`, {
       admin: req.admin,
       csrf: req.admin ? csrfToken(secret, req.admin) : '',
@@ -57,6 +54,14 @@ export function adminRoutes(app: FastifyInstance, ctx: AppContext): void {
       ...data,
     });
   };
+}
+
+export function adminRoutes(app: FastifyInstance, ctx: AppContext): void {
+  const { config, repo } = ctx;
+  const secret = config.sessionSecret;
+  const secure = config.env === 'production';
+  const guard = requireAdmin(secret);
+  const page = makeAdminPage(ctx);
 
   // ---------- login ----------
   app.get('/admin/login', async (req, reply) => {

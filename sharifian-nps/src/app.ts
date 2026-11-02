@@ -12,6 +12,7 @@ import { setupAuth } from './plugins/auth.ts';
 import { setupSecurity } from './plugins/security.ts';
 import { setupViews } from './plugins/views.ts';
 import { adminRoutes } from './routes/admin.ts';
+import { dashboardRoutes } from './routes/dashboard.ts';
 import { exportRoutes } from './routes/exports.ts';
 import { surveyRoutes } from './routes/survey.ts';
 import { createNotifier, type Notifier } from './services/notify.ts';
@@ -102,6 +103,7 @@ export async function buildApp(options: BuildOptions): Promise<FastifyInstance> 
 
   surveyRoutes(app, ctx);
   adminRoutes(app, ctx);
+  dashboardRoutes(app, ctx);
   exportRoutes(app, ctx);
 
   const wantsJson = (url: string, accept: string | undefined) =>

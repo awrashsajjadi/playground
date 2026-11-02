@@ -1,0 +1,64 @@
+<% const d = it.d, h = it.h, s = d.summary; %><!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گزارش NPS | <%= it.survey.brand.name %></title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="<%= h.asset('img/favicon.svg') %>" type="image/svg+xml">
+<link rel="stylesheet" href="<%= h.asset('css/report.css') %>">
+<script defer src="<%= h.asset('build/dashboard.js') %>"></script>
+</head>
+<body class="report" data-mode="report">
+<div class="toolbar no-print"><button type="button" id="print-btn">چاپ / ذخیره PDF</button><span>برای PDF در پنجره‌ی چاپ «Save as PDF» را انتخاب کنید.</span></div>
+<main class="sheet">
+<header class="r-head">
+<% if (h.hasAsset('img/logo.png')) { %><img src="<%= h.asset('img/logo.png') %>" alt="فروشگاه <%= it.survey.brand.name %>" height="56"><% } %>
+<div>
+<h1>گزارش نظرسنجی رضایت مشتریان (NPS)</h1>
+<p><%= d.periodLabel %><% if (d.active) { %> · با فیلتر<% } %> · تهیه‌شده در <%= d.generatedAt %></p>
+</div>
+</header>
+
+<section class="r-kpis">
+<div class="r-hero"><span>NPS</span><strong dir="ltr"><%= s.nps === null ? '—' : h.faSigned(s.nps) %></strong><small><% if (s.moe !== null) { %>حاشیه‌ی خطا ۹۵٪: <bdi dir="ltr">± <%= h.faNumber(s.moe, 1) %></bdi><% } %></small></div>
+<div><span>پاسخ‌ها</span><strong><%= h.faNumber(s.n) %></strong><small>از <%= h.faNumber(d.customers) %> مشتری · نرخ پاسخ <%= d.responseRate === null ? '—' : h.faPercent(d.responseRate) %></small></div>
+<div><span>میانگین امتیاز</span><strong><%= s.mean === null ? '—' : h.faNumber(s.mean, 1) %></strong><small>از ۱۰</small></div>
+<div><span>پیگیری منتقدان</span><strong><%= h.faNumber(d.followups.length - d.todo) %> از <%= h.faNumber(d.followups.length) %></strong><small>تماس گرفته‌شده یا حل‌شده</small></div>
+</section>
+<section class="r-block">
+<%~ include('./_segbar', { s, h, labels: d.chart.labels }) %>
+</section>
+
+<section class="r-grid">
+<figure class="r-chart"><figcaption>توزیع امتیاز ۰ تا ۱۰</figcaption><div class="chart-box"><canvas id="ch-hist" role="img" aria-label="توزیع امتیاز"></canvas></div></figure>
+<figure class="r-chart"><figcaption>NPS تجمعی و تعداد پاسخ روزانه</figcaption><div class="chart-box chart-box-sm"><canvas id="ch-nps" role="img" aria-label="NPS تجمعی"></canvas></div><div class="chart-box chart-box-sm"><canvas id="ch-daily" role="img" aria-label="پاسخ روزانه"></canvas></div></figure>
+</section>
+
+<section class="r-two">
+<div class="r-list r-good"><h2>۳ نقطه‌ی قوت</h2><ol><% for (const x of d.strengths) { %><li><strong><%= x.label %></strong> — <%= h.faNumber(x.count) %> مروج<% if (x.share !== null) { %> (<%= h.faPercent(x.share) %> از مروجان)<% } %></li><% } %></ol></div>
+<div class="r-list r-bad"><h2>۳ نقطه‌ی درد</h2><ol><% for (const x of d.pains) { %><li><strong><%= x.label %></strong> — <%= h.faNumber(x.count) %> منتقد و خنثی<% if (x.share !== null) { %> (<%= h.faPercent(x.share) %>)<% } %></li><% } %></ol></div>
+</section>
+
+<section class="r-grid">
+<figure class="r-chart"><figcaption>نقطه‌ی قوت (مروجان، چپ) و درد (منتقدان، راست)</figcaption><div class="chart-box chart-box-tall"><canvas id="ch-drivers" role="img" aria-label="عوامل"></canvas></div></figure>
+<figure class="r-chart"><figcaption>موضوع‌های متن نظرها</figcaption><div class="chart-box chart-box-tall"><canvas id="ch-themes" role="img" aria-label="موضوع‌ها"></canvas></div></figure>
+</section>
+
+<section class="r-block r-tables">
+<div><h2>کانال‌ها</h2><%~ include('./_nps-table', { rows: d.channels, title: 'کانال', h }) %></div>
+<div><h2>سطح ارزش مشتری</h2><%~ include('./_nps-table', { rows: d.segments[2].rows, title: 'سطح', h }) %></div>
+</section>
+
+<section class="r-block r-quotes">
+<h2>۱۰ نقل‌قول منتخب</h2>
+<ol>
+<% for (const q of d.quotes) { %><li class="q-<%= q.category %>"><p>«<%= q.comment %>»</p><small><i class="sw sw-<%= q.category %>"></i><%= q.categoryLabel %> · امتیاز <%= h.fa(q.score) %><%= q.customerType ? ' · ' + q.customerType : '' %><%= q.city ? ' · ' + q.city : '' %></small></li>
+<% } %></ol>
+<% if (!d.quotes.length) { %><p class="muted">هنوز نظری ثبت نشده است.</p><% } %>
+</section>
+<footer class="r-foot">سامانه نظرسنجی <%= it.survey.brand.name %> · <%= d.generatedAt %> · نقل‌قول‌ها بدون نام مشتری آمده‌اند.</footer>
+</main>
+<script type="application/json" id="dash-data"><%~ h.json(d.chart) %></script>
+</body>
+</html>

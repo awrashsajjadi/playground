@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium, devices, type Browser, type BrowserContextOptions, type Page } from '@playwright/test';
+import { seedDemo } from '../src/services/demo.ts';
 import { buildClient } from './build-client.ts';
 import { startTestServer, TEST_PASSWORD, type RunningServer } from './test-server.ts';
 
@@ -64,7 +65,52 @@ async function surveyFlow(browser: Browser, server: RunningServer, device: strin
   return { bytes, external, width };
 }
 
+async function dashboardShots(browser: Browser): Promise<void> {
+  console.log('dashboard (demo data)');
+  const server = await startTestServer({
+    SURVEY_OPENS_AT: '2026-11-08T08:00:00+03:30',
+    SURVEY_CLOSES_AT: '2026-11-14T23:59:59+03:30',
+  });
+  seedDemo(server.db, server.config);
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'fa-IR' });
+  const page = await context.newPage();
+  await page.goto(`${server.url}/admin/login`);
+  await page.fill('input[name="password"]', TEST_PASSWORD);
+  await page.fill('input[name="name"]', 'مدیر فروش');
+  await page.click('button[type="submit"]');
+  await page.waitForURL('**/admin');
+  await page.goto(`${server.url}/admin/dashboard`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(600);
+  await shot(page, '20-dashboard-desktop', true);
+  await page.goto(`${server.url}/admin/report`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(600);
+  await shot(page, '21-report-a4', true);
+  await page.emulateMedia({ media: 'print' });
+  await page.pdf({ path: join(OUT, '21-report-a4.pdf'), format: 'A4', printBackground: true });
+  console.log('  ✓ 21-report-a4.pdf');
+  await context.close();
+  const mobile = await browser.newContext({ ...iphone12, locale: 'fa-IR' });
+  const mp = await mobile.newPage();
+  await mp.goto(`${server.url}/admin/login`);
+  await mp.fill('input[name="password"]', TEST_PASSWORD);
+  await mp.click('button[type="submit"]');
+  await mp.waitForURL('**/admin');
+  await mp.goto(`${server.url}/admin/dashboard`, { waitUntil: 'networkidle' });
+  await mp.waitForTimeout(600);
+  await shot(mp, '22-dashboard-iphone12');
+  await mobile.close();
+  await server.close();
+}
+
 async function main(): Promise<void> {
+  if (process.argv.includes('--dashboard-only')) {
+    mkdirSync(OUT, { recursive: true });
+    await buildClient();
+    const browser = await chromium.launch();
+    await dashboardShots(browser);
+    await browser.close();
+    return;
+  }
   mkdirSync(OUT, { recursive: true });
   await buildClient();
   const server = await startTestServer();
@@ -142,6 +188,8 @@ async function main(): Promise<void> {
     await ap.click('details:nth-of-type(2) summary').catch(() => undefined);
     await shot(ap, '13-admin-links', true);
     await admin.close();
+
+    await dashboardShots(browser);
   } finally {
     await browser.close();
     await server.close();

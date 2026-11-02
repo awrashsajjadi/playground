@@ -1,5 +1,6 @@
 <% layout('./layout', { withScript: true }) %>
 <% const s = it.survey, v = it.values || {}, e = it.errors || {}; %>
+<h1 class="sr-only"><%= s.meta.title %></h1>
 <div class="progress" aria-hidden="true"><span class="progress-bar"></span></div>
 <form id="nps" class="survey" method="post" action="/api/submit" novalidate data-start-step="<%= it.startStep %>">
 <input type="hidden" name="tk" value="<%= it.token %>">

@@ -15,7 +15,7 @@ export interface RunningServer {
   close(): Promise<void>;
 }
 
-export async function startTestServer(env: Record<string, string> = {}): Promise<RunningServer> {
+export async function startTestServer(env: Record<string, string> = {}, port = 0): Promise<RunningServer> {
   const dir = mkdtempSync(join(tmpdir(), 'nps-'));
   const now = Date.now();
   const config = loadConfig({
@@ -30,7 +30,7 @@ export async function startTestServer(env: Record<string, string> = {}): Promise
   });
   const db = openDb(config.databasePath);
   const app = await buildApp({ config, db });
-  const address = await app.listen({ port: 0, host: '127.0.0.1' });
+  const address = await app.listen({ port, host: '127.0.0.1' });
   return {
     url: address,
     db,

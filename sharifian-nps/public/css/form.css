@@ -20,9 +20,10 @@
   --muted: #57534e;
   --line: #e7e0d6;
   --control: #8c847e;
-  --accent: #c2410c;
-  --accent-dark: #9a3412;
-  --accent-soft: #fff1e6;
+  --accent: #004a14;      /* brand green (logo) */
+  --accent-dark: #00320e;
+  --accent-soft: #e9f3eb;
+  --gold: #d2ab67;        /* brand gold (logo) — decorative only, too light for text */
   --danger: #b91c1c;
   --radius: 12px;
 }
@@ -64,17 +65,17 @@ button, input, textarea { font: inherit; color: inherit; }
 }
 
 /* Brand */
-.brand { display: flex; justify-content: center; padding: 22px 16px 2px; }
+.brand { display: flex; justify-content: center; padding: 18px 16px 0; }
 .brand-mark {
   display: inline-flex; align-items: center; gap: 6px;
   color: var(--accent); font-weight: 700; font-size: 19px; letter-spacing: 0;
 }
-.brand img { height: 32px; width: auto; }
+.brand img { display: block; height: 50px; width: auto; }
 
 .page { max-width: 560px; margin: 0 auto; padding: 8px 16px 40px; }
 
 /* Progress (JS only) */
-.progress { display: none; position: fixed; top: 0; right: 0; left: 0; height: 4px; background: #f1e6d8; z-index: 10; }
+.progress { display: none; position: fixed; top: 0; right: 0; left: 0; height: 4px; background: #efe3c9; z-index: 10; }
 .js .progress { display: block; }
 .progress-bar { display: block; height: 100%; width: 33.34%; background: var(--accent); transition: width .3s ease; }
 
@@ -163,7 +164,7 @@ input[type='tel'] { min-height: 58px; font-size: 21px; letter-spacing: .06em; di
 textarea:focus, input[type='tel']:focus {
   outline: 2px solid transparent; /* still visible in Windows high-contrast mode */
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px #f3c4a6;
+  box-shadow: 0 0 0 3px #b7d5be;
 }
 ::placeholder { color: #736c66; opacity: 1; }
 [aria-invalid='true'] { border-color: var(--danger) !important; }

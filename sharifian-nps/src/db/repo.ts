@@ -157,6 +157,19 @@ export function createRepo(db: DB) {
       SELECT * FROM customers c
       WHERE NOT EXISTS (SELECT 1 FROM responses r WHERE r.mobile = c.mobile AND r.kind <> 'test')
       ORDER BY CASE c.value_tier WHEN 'A' THEN 0 WHEN 'B' THEN 1 WHEN 'C' THEN 2 ELSE 3 END, c.sales_rep, c.name`),
+    customersLite: db.prepare<[], { city: string | null; customer_type: string | null; value_tier: string | null; sales_rep: string | null }>(
+      'SELECT city, customer_type, value_tier, sales_rep FROM customers',
+    ),
+    events: db.prepare<[], { session_id: string; type: string; src: string; created_at: string }>(
+      'SELECT session_id, type, src, created_at FROM events',
+    ),
+    responseReps: db.prepare<[], { rep: string }>(
+      "SELECT DISTINCT rep FROM responses WHERE rep IS NOT NULL AND rep <> '' AND kind <> 'test'",
+    ),
+    updateFollowup: db.prepare<[string, string | null, string | null, string, number]>(`
+      UPDATE responses SET followup_status = ?, followup_note = ?, followup_by = ?, followup_at = ?
+      WHERE id = ? AND kind <> 'test'`),
+    setFeatured: db.prepare<[number, number]>("UPDATE responses SET featured = ? WHERE id = ? AND kind <> 'test'"),
     deleteByMobile: db.prepare<[string]>('DELETE FROM responses WHERE mobile = ?'),
     deleteTest: db.prepare("DELETE FROM responses WHERE kind = 'test'"),
   };
@@ -190,6 +203,12 @@ export function createRepo(db: DB) {
     responsesForExport: () => s.responsesForExport.all(),
     followups: () => s.followups.all(),
     nonRespondents: () => s.nonRespondents.all(),
+    customersLite: () => s.customersLite.all(),
+    events: () => s.events.all(),
+    responseReps: () => s.responseReps.all().map((r) => r.rep),
+    updateFollowup: (id: number, status: string, note: string | null, by: string | null, at: string) =>
+      s.updateFollowup.run(status, note, by, at, id).changes > 0,
+    setFeatured: (id: number, featured: boolean) => s.setFeatured.run(featured ? 1 : 0, id).changes > 0,
     deleteResponsesByMobile: (mobile: string) => s.deleteByMobile.run(mobile).changes,
     deleteTestResponses: () => s.deleteTest.run().changes,
     transaction: <T>(fn: () => T): T => db.transaction(fn)(),

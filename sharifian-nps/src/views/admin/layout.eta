@@ -9,19 +9,22 @@
 <% } %><link rel="icon" href="<%= it.h.asset('img/favicon.svg') %>" type="image/svg+xml">
 <link rel="stylesheet" href="<%= it.h.asset('css/admin.css') %>">
 <script defer src="<%= it.h.asset('build/admin.js') %>"></script>
+<% if (it.nav === 'dashboard') { %><script defer src="<%= it.h.asset('build/dashboard.js') %>"></script>
+<% } %>
 </head>
 <body>
 <% if (it.admin) { %><header class="topbar">
-<a class="topbar-brand" href="/admin">پنل نظرسنجی <%= it.survey.brand.name %></a>
+<a class="topbar-brand" href="/admin"><% if (it.h.hasAsset('img/logo.png')) { %><img src="<%= it.h.asset('img/logo.png') %>" alt="" width="58" height="32"><% } %>پنل نظرسنجی</a>
 <nav class="topbar-nav" aria-label="بخش‌های پنل">
 <a href="/admin"<%~ it.nav === 'home' ? ' aria-current="page"' : '' %>>خانه</a>
+<a href="/admin/dashboard"<%~ it.nav === 'dashboard' ? ' aria-current="page"' : '' %>>داشبورد</a>
 <a href="/admin/import"<%~ it.nav === 'import' ? ' aria-current="page"' : '' %>>لیست مشتریان</a>
 <a href="/admin/links"<%~ it.nav === 'links' ? ' aria-current="page"' : '' %>>لینک کانال‌ها</a>
 </nav>
 <form class="topbar-logout" method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= it.csrf %>"><% if (it.admin.name) { %><span class="who"><%= it.admin.name %></span><% } %><button type="submit" class="link-btn">خروج</button></form>
 </header>
 <% if (it.demo) { %><p class="banner banner-danger" role="alert">⚠️ داده‌ی نمایشی (دمو) در دیتابیس است. قبل از شروع کمپین <code>npm run seed:clear</code> را اجرا کنید؛ خروجی‌ها با پیشوند DEMO- نام‌گذاری می‌شوند.</p>
-<% } %><% } %><main class="wrap">
+<% } %><% } %><main class="wrap<%= it.wide ? ' wrap-wide' : '' %>">
 <%~ it.body %>
 </main>
 </body>

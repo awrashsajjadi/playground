@@ -58,6 +58,12 @@ export function faWeekdayDate(value: DateInput): string {
   return `${p.weekday} ${p.day} ${p.month}`;
 }
 
+/** ۱۷ آبان — short label for chart axes */
+export function faDayMonth(value: DateInput): string {
+  const p = parts(fullFormat, value);
+  return `${p.day} ${p.month}`;
+}
+
 /** ۱۴۰۵/۰۸/۱۷ */
 export function faNumericDate(value: DateInput): string {
   const p = parts(numericFormat, value);

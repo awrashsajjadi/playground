@@ -1,0 +1,10 @@
+<% /* Tall segmented bar: detractor → passive → promoter (RTL: detractors on the right). Label only where it fits. */ %>
+<% const s = it.s, h = it.h; const parts = [['detractor', s.pctDetractors, s.detractors], ['passive', s.pctPassives, s.passives], ['promoter', s.pctPromoters, s.promoters]]; %>
+<div class="segbar" role="img" aria-label="سهم دسته‌ها: منتقد <%= s.pctDetractors === null ? '۰' : h.faPercent(s.pctDetractors / 100) %>، خنثی <%= s.pctPassives === null ? '۰' : h.faPercent(s.pctPassives / 100) %>، مروج <%= s.pctPromoters === null ? '۰' : h.faPercent(s.pctPromoters / 100) %>">
+<% if (s.n === 0) { %><span class="seg seg-empty"></span><% } %><% for (const [cat, pct, count] of parts) { if (!pct) continue; %><span class="seg seg-<%= cat %>" style="width:<%= pct.toFixed(2) %>%" title="<%= it.labels[cat] %>: <%= h.faNumber(count) %> پاسخ"><% if (pct >= 9) { %><span><%= h.faPercent(pct / 100) %></span><% } %></span><% } %>
+</div>
+<ul class="legend">
+<li><i class="sw sw-detractor"></i>منتقد (۰ تا ۶) · <%= h.faNumber(s.detractors) %></li>
+<li><i class="sw sw-passive"></i>خنثی (۷ و ۸) · <%= h.faNumber(s.passives) %></li>
+<li><i class="sw sw-promoter"></i>مروج (۹ و ۱۰) · <%= h.faNumber(s.promoters) %></li>
+</ul>

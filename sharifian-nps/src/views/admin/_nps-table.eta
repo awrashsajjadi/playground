@@ -1,0 +1,14 @@
+<% /* NPS per group: label, n, signed NPS, diverging bar (positive grows left = RTL "forward"), margin of error. */ %>
+<div class="table-scroll"><table class="nps-table">
+<thead><tr><th scope="col"><%= it.title %></th><th scope="col" class="num">تعداد</th><th scope="col" class="num">NPS</th><th scope="col" class="bar-col"><span class="sr-only">نمودار</span></th><th scope="col" class="num">± خطا</th></tr></thead>
+<tbody>
+<% for (const r of it.rows) { %><tr<%~ r.lowSample ? ' class="low"' : '' %>>
+<th scope="row"><%= r.label %><% if (r.lowSample) { %><span class="low-note">نمونه کم — قابل اتکا نیست</span><% } %></th>
+<td class="num"><%= it.h.faNumber(r.n) %></td>
+<td class="num"><bdi dir="ltr"><%= r.nps === null ? '—' : it.h.faSigned(r.nps) %></bdi></td>
+<td class="bar-col" aria-hidden="true"><span class="dbar"><% if (r.nps) { %><span class="dbar-fill <%= r.nps > 0 ? 'pos' : 'neg' %>" style="width:<%= Math.min(50, Math.abs(r.nps) / 2).toFixed(1) %>%"></span><% } %></span></td>
+<td class="num"><%= r.moe === null ? '—' : it.h.faNumber(r.moe) %></td>
+</tr>
+<% } %><% if (!it.rows.length) { %><tr><td colspan="5" class="empty">هنوز داده‌ای نیست.</td></tr><% } %>
+</tbody>
+</table></div>
